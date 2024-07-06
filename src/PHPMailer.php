@@ -13,7 +13,7 @@
  * @copyright 2012 - 2020 Marcus Bointon
  * @copyright 2010 - 2012 Jim Jagielski
  * @copyright 2004 - 2009 Andy Prevost
- * @license   https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html GNU Lesser General Public License
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @note      This program is distributed in the hope that it will be useful - WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.
@@ -38,6 +38,7 @@ class PHPMailer
     const CONTENT_TYPE_PLAINTEXT = 'text/plain';
     const CONTENT_TYPE_TEXT_CALENDAR = 'text/calendar';
     const CONTENT_TYPE_TEXT_HTML = 'text/html';
+    const CONTENT_TYPE_AMP = 'text/x-amp-html';
     const CONTENT_TYPE_MULTIPART_ALTERNATIVE = 'multipart/alternative';
     const CONTENT_TYPE_MULTIPART_MIXED = 'multipart/mixed';
     const CONTENT_TYPE_MULTIPART_RELATED = 'multipart/related';
@@ -148,11 +149,19 @@ class PHPMailer
     public $AltBody = '';
 
     /**
+     * The amp content message body.
+     * If AMP then call isAMP(true).
+     * @var string
+     */
+    public $AmpBody = '';
+
+    /**
      * An iCal message part body.
      * Only supported in simple alt or alt_inline message types
      * To generate iCal event structures, use classes like EasyPeasyICS or iCalcreator.
      *
-     * @see https://kigkonsult.se/iCalcreator/
+     * @see http://sprain.ch/blog/downloads/php-class-easypeasyics-create-ical-files-with-php/
+     * @see http://kigkonsult.se/iCalcreator/
      *
      * @var string
      */
@@ -467,7 +476,7 @@ class PHPMailer
      * Only applicable when sending via SMTP.
      *
      * @see https://en.wikipedia.org/wiki/Variable_envelope_return_path
-     * @see https://www.postfix.org/VERP_README.html Postfix VERP info
+     * @see http://www.postfix.org/VERP_README.html Postfix VERP info
      *
      * @var bool
      */
@@ -550,10 +559,10 @@ class PHPMailer
      * The function that handles the result of the send email action.
      * It is called out by send() for each email sent.
      *
-     * Value can be any php callable: https://www.php.net/is_callable
+     * Value can be any php callable: http://www.php.net/is_callable
      *
      * Parameters:
-     *   bool $result           result of the send action
+     *   bool $result        result of the send action
      *   array   $to            email addresses of the recipients
      *   array   $cc            cc email addresses
      *   array   $bcc           bcc email addresses
@@ -902,7 +911,7 @@ class PHPMailer
         }
         //Is this a PSR-3 logger?
         if ($this->Debugoutput instanceof \Psr\Log\LoggerInterface) {
-            $this->Debugoutput->debug(rtrim($str, "\r\n"));
+            $this->Debugoutput->debug($str);
 
             return;
         }
@@ -934,7 +943,7 @@ class PHPMailer
                 "\t",
                     //Trim trailing space
                 trim(
-                    //Indent for readability, except for trailing break
+                //Indent for readability, except for trailing break
                     str_replace(
                         "\n",
                         "\n                   \t                  ",
@@ -954,6 +963,20 @@ class PHPMailer
     {
         if ($isHtml) {
             $this->ContentType = static::CONTENT_TYPE_TEXT_HTML;
+        } else {
+            $this->ContentType = static::CONTENT_TYPE_PLAINTEXT;
+        }
+    }
+
+    /**
+     * Sets message type to AMP or plain.
+     *
+     * @param bool $isAMP True for AMP mode
+     */
+    public function isAMP(bool $isAMP = true)
+    {
+        if ($isAMP) {
+            $this->ContentType = static::CONTENT_TYPE_AMP;
         } else {
             $this->ContentType = static::CONTENT_TYPE_PLAINTEXT;
         }
@@ -1211,7 +1234,7 @@ class PHPMailer
      * Uses the imap_rfc822_parse_adrlist function if the IMAP extension is available.
      * Note that quotes in the name part are removed.
      *
-     * @see https://www.andrew.cmu.edu/user/agreen1/testing/mrbs/web/Mail/RFC822.php A more careful implementation
+     * @see http://www.andrew.cmu.edu/user/agreen1/testing/mrbs/web/Mail/RFC822.php A more careful implementation
      *
      * @param string $addrstr The address list string
      * @param bool   $useimap Whether to use the IMAP extension to parse the list
@@ -1269,7 +1292,7 @@ class PHPMailer
                         ];
                     }
                 } else {
-                    list($name, $email) = explode('<', $address);
+                    [$name, $email] = explode('<', $address);
                     $email = trim(str_replace('>', '', $email));
                     $name = trim($name);
                     if (static::validateAddress($email)) {
@@ -1317,7 +1340,7 @@ class PHPMailer
         if (
             (false === $pos)
             || ((!$this->has8bitChars(substr($address, ++$pos)) || !static::idnSupported())
-            && !static::validateAddress($address))
+                && !static::validateAddress($address))
         ) {
             $error_message = sprintf(
                 '%s (From): %s',
@@ -1406,6 +1429,7 @@ class PHPMailer
                  *  * IPv6 literals: 'first.last@[IPv6:a1::]'
                  * Not all of these will necessarily work for sending!
                  *
+                 * @see       http://squiloople.com/2009/12/20/email-address-validation/
                  * @copyright 2009-2010 Michael Rushton
                  * Feel free to use and redistribute this code. But please keep this copyright notice.
                  */
@@ -1484,7 +1508,7 @@ class PHPMailer
                     $punycode = idn_to_ascii(
                         $domain,
                         \IDNA_DEFAULT | \IDNA_USE_STD3_RULES | \IDNA_CHECK_BIDI |
-                            \IDNA_CHECK_CONTEXTJ | \IDNA_NONTRANSITIONAL_TO_ASCII,
+                        \IDNA_CHECK_CONTEXTJ | \IDNA_NONTRANSITIONAL_TO_ASCII,
                         \INTL_IDNA_VARIANT_UTS46
                     );
                 } elseif (defined('INTL_IDNA_VARIANT_2003')) {
@@ -1732,8 +1756,9 @@ class PHPMailer
         //This sets the SMTP envelope sender which gets turned into a return-path header by the receiver
         //A space after `-f` is optional, but there is a long history of its presence
         //causing problems, so we don't use one
-        //Exim docs: https://www.exim.org/exim-html-current/doc/html/spec_html/ch-the_exim_command_line.html
-        //Sendmail docs: https://www.sendmail.org/~ca/email/man/sendmail.html
+        //Exim docs: http://www.exim.org/exim-html-current/doc/html/spec_html/ch-the_exim_command_line.html
+        //Sendmail docs: http://www.sendmail.org/~ca/email/man/sendmail.html
+        //Qmail docs: http://www.qmail.org/man/man8/qmail-inject.html
         //Example problem: https://www.drupal.org/node/1057954
 
         //PHP 5.6 workaround
@@ -1898,7 +1923,7 @@ class PHPMailer
     /**
      * Send mail using the PHP mail() function.
      *
-     * @see https://www.php.net/manual/en/book.mail.php
+     * @see http://www.php.net/manual/en/book.mail.php
      *
      * @param string $header The message headers
      * @param string $body   The message body
@@ -1928,8 +1953,9 @@ class PHPMailer
         //This sets the SMTP envelope sender which gets turned into a return-path header by the receiver
         //A space after `-f` is optional, but there is a long history of its presence
         //causing problems, so we don't use one
-        //Exim docs: https://www.exim.org/exim-html-current/doc/html/spec_html/ch-the_exim_command_line.html
-        //Sendmail docs: https://www.sendmail.org/~ca/email/man/sendmail.html
+        //Exim docs: http://www.exim.org/exim-html-current/doc/html/spec_html/ch-the_exim_command_line.html
+        //Sendmail docs: http://www.sendmail.org/~ca/email/man/sendmail.html
+        //Qmail docs: http://www.qmail.org/man/man8/qmail-inject.html
         //Example problem: https://www.drupal.org/node/1057954
         //CVE-2016-10033, CVE-2016-10045: Don't pass -f if characters will be escaped.
 
@@ -2649,6 +2675,9 @@ class PHPMailer
             case 'alt_inline_attach':
                 $this->AltBody = $this->wrapText($this->AltBody, $this->WordWrap);
                 break;
+            case 'amp':
+                $this->AmpBody = $this->wrapText($this->AmpBody, $this->WordWrap);
+                break;
             default:
                 $this->Body = $this->wrapText($this->Body, $this->WordWrap);
                 break;
@@ -2778,6 +2807,8 @@ class PHPMailer
                 break;
             case 'alt':
             case 'alt_inline':
+            case 'amp':
+            case 'alt_amp':
                 $result .= $this->headerLine('Content-Type', static::CONTENT_TYPE_MULTIPART_ALTERNATIVE . ';');
                 $result .= $this->textLine(' boundary="' . $this->boundary[1] . '"');
                 break;
@@ -2883,6 +2914,8 @@ class PHPMailer
 
         $altBodyEncoding = $this->Encoding;
         $altBodyCharSet = $this->CharSet;
+        $ampBodyCharSet = $this->CharSet;
+        $ampBodyEncoding = $this->Encoding;
         //Can we do a 7-bit downgrade?
         if (static::ENCODING_8BIT === $altBodyEncoding && !$this->has8bitChars($this->AltBody)) {
             $altBodyEncoding = static::ENCODING_7BIT;
@@ -2934,6 +2967,77 @@ class PHPMailer
                     $altBodyEncoding
                 );
                 $body .= $this->encodeString($this->AltBody, $altBodyEncoding);
+                $body .= static::$LE;
+                $body .= $this->getBoundary(
+                    $this->boundary[1],
+                    $bodyCharSet,
+                    static::CONTENT_TYPE_TEXT_HTML,
+                    $bodyEncoding
+                );
+                $body .= $this->encodeString($this->Body, $bodyEncoding);
+                $body .= static::$LE;
+                if (!empty($this->Ical)) {
+                    $method = static::ICAL_METHOD_REQUEST;
+                    foreach (static::$IcalMethods as $imethod) {
+                        if (stripos($this->Ical, 'METHOD:' . $imethod) !== false) {
+                            $method = $imethod;
+                            break;
+                        }
+                    }
+                    $body .= $this->getBoundary(
+                        $this->boundary[1],
+                        '',
+                        static::CONTENT_TYPE_TEXT_CALENDAR . '; method=' . $method,
+                        ''
+                    );
+                    $body .= $this->encodeString($this->Ical, $this->Encoding);
+                    $body .= static::$LE;
+                }
+                $body .= $this->endBoundary($this->boundary[1]);
+                break;
+            case 'amp':
+                $body .= $mimepre;
+                $body .= $this->getBoundary(
+                    $this->boundary[1],
+                    $altBodyCharSet,
+                    static::CONTENT_TYPE_PLAINTEXT,
+                    $altBodyEncoding
+                );
+                $body .= $this->encodeString($this->AltBody, $altBodyEncoding);
+                $body .= static::$LE;
+                $body .= $this->getBoundary(
+                    $this->boundary[1],
+                    $ampBodyCharSet,
+                    static::CONTENT_TYPE_AMP,
+                    $ampBodyEncoding
+                );
+                $body .= $this->encodeString($this->AmpBody, $ampBodyEncoding);
+                $body .= static::$LE;
+                $body .= $this->getBoundary(
+                    $this->boundary[1],
+                    $bodyCharSet,
+                    static::CONTENT_TYPE_TEXT_HTML,
+                    $bodyEncoding
+                );
+                $body .= $this->encodeString($this->Body, $bodyEncoding);
+                break;
+            case 'alt_amp':
+                $body .= $mimepre;
+                $body .= $this->getBoundary(
+                    $this->boundary[1],
+                    $altBodyCharSet,
+                    static::CONTENT_TYPE_PLAINTEXT,
+                    $altBodyEncoding
+                );
+                $body .= $this->encodeString($this->AltBody, $altBodyEncoding);
+                $body .= static::$LE;
+                $body .= $this->getBoundary(
+                    $this->boundary[1],
+                    $ampBodyCharSet,
+                    static::CONTENT_TYPE_AMP,
+                    $ampBodyEncoding
+                );
+                $body .= $this->encodeString($this->AmpBody, $ampBodyEncoding);
                 $body .= static::$LE;
                 $body .= $this->getBoundary(
                     $this->boundary[1],
@@ -3198,6 +3302,9 @@ class PHPMailer
         $type = [];
         if ($this->alternativeExists()) {
             $type[] = 'alt';
+        }
+        if ($this->ampExists()) {
+            $type[] = 'amp';
         }
         if ($this->inlineImageExists()) {
             $type[] = 'inline';
@@ -3630,7 +3737,7 @@ class PHPMailer
      * without breaking lines within a character.
      * Adapted from a function by paravoid.
      *
-     * @see https://www.php.net/manual/en/function.mb-encode-mimeheader.php#60283
+     * @see http://www.php.net/manual/en/function.mb-encode-mimeheader.php#60283
      *
      * @param string $str       multi-byte text to wrap encode
      * @param string $linebreak string to use as linefeed/end-of-line
@@ -3686,7 +3793,7 @@ class PHPMailer
     /**
      * Encode a string using Q encoding.
      *
-     * @see https://www.rfc-editor.org/rfc/rfc2047#section-4.2
+     * @see http://tools.ietf.org/html/rfc2047#section-4.2
      *
      * @param string $str      the text to encode
      * @param string $position Where the text is going to be used, see the RFC for what that means
@@ -4009,6 +4116,16 @@ class PHPMailer
     }
 
     /**
+     * Check if this message has an amp body set.
+     *
+     * @return bool
+     */
+    public function ampExists()
+    {
+        return !empty($this->AmpBody);
+    }
+
+    /**
      * Clear queued addresses of given kind.
      *
      * @param string $kind 'to', 'cc', or 'bcc'
@@ -4110,7 +4227,7 @@ class PHPMailer
     {
         if (null === $value && strpos($name, ':') !== false) {
             //Value passed in as name:value
-            list($name, $value) = explode(':', $name, 2);
+            [$name, $value] = explode(':', $name, 2);
         }
         $name = trim($name);
         $value = (null === $value) ? null : trim($value);
@@ -4142,7 +4259,7 @@ class PHPMailer
     {
         if (null === $value && strpos($name, ':') !== false) {
             //Value passed in as name:value
-            list($name, $value) = explode(':', $name, 2);
+            [$name, $value] = explode(':', $name, 2);
         }
         $name = trim($name);
         $value = (null === $value) ? '' : trim($value);
@@ -4263,8 +4380,8 @@ class PHPMailer
             //Is it a valid IPv4 address?
             return filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false;
         }
-        //Is it a syntactically valid hostname (when embedded in a URL)?
-        return filter_var('https://' . $host, FILTER_VALIDATE_URL) !== false;
+        //Is it a syntactically valid hostname (when embeded in a URL)?
+        return filter_var('http://' . $host, FILTER_VALIDATE_URL) !== false;
     }
 
     /**
@@ -4340,7 +4457,7 @@ class PHPMailer
     {
         if (null === $value && strpos($name, ':') !== false) {
             //Value passed in as name:value
-            list($name, $value) = explode(':', $name, 2);
+            [$name, $value] = explode(':', $name, 2);
         }
         $name = trim($name);
         $value = (null === $value) ? '' : trim($value);
@@ -4480,6 +4597,120 @@ class PHPMailer
         }
 
         return $this->Body;
+    }
+
+    /**
+     * Create a message body from an AMP string.
+     * Automatically inlines images and creates a plain-text version by converting the AMP,
+     * overwriting any existing values in Body, AltBody and AmpBody.
+     * Do not source $message content from user input!
+     * $basedir is prepended when handling relative URLs, e.g. <img src="/images/a.png"> and must not be empty
+     * will look for an image file in $basedir/images/a.png and convert it to inline.
+     * If you don't provide a $basedir, relative paths will be left untouched (and thus probably break in email)
+     * Converts data-uri images into embedded attachments.
+     * If you don't want to apply these transformations to your HTML, just set Body and AltBody directly.
+     *
+     * @param string        $message  AMP message string
+     * @param string        $basedir  Absolute path to a base directory to prepend to relative paths to images
+     * @param bool|callable $advanced Whether to use the internal HTML to text converter
+     *                                or your own custom converter
+     * @return string The transformed message body
+     *
+     * @throws Exception
+     *
+     * @see PHPMailer::html2text()
+     */
+    public function msgAMP($message, $basedir = '', $advanced = false)
+    {
+        preg_match_all('/(?<!-)(src|background)=["\'](.*)["\']/Ui', $message, $images);
+        if (array_key_exists(2, $images)) {
+            if (strlen($basedir) > 1 && '/' !== substr($basedir, -1)) {
+                //Ensure $basedir has a trailing /
+                $basedir .= '/';
+            }
+            foreach ($images[2] as $imgindex => $url) {
+                //Convert data URIs into embedded images
+                //e.g. "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                $match = [];
+                if (preg_match('#^data:(image/(?:jpe?g|gif|png));?(base64)?,(.+)#', $url, $match)) {
+                    if (count($match) === 4 && static::ENCODING_BASE64 === $match[2]) {
+                        $data = base64_decode($match[3]);
+                    } elseif ('' === $match[2]) {
+                        $data = rawurldecode($match[3]);
+                    } else {
+                        //Not recognised so leave it alone
+                        continue;
+                    }
+                    //Hash the decoded data, not the URL, so that the same data-URI image used in multiple places
+                    //will only be embedded once, even if it used a different encoding
+                    $cid = substr(hash('sha256', $data), 0, 32) . '@phpmailer.0'; //RFC2392 S 2
+
+                    if (!$this->cidExists($cid)) {
+                        $this->addStringEmbeddedImage(
+                            $data,
+                            $cid,
+                            'embed' . $imgindex,
+                            static::ENCODING_BASE64,
+                            $match[1]
+                        );
+                    }
+                    $message = str_replace(
+                        $images[0][$imgindex],
+                        $images[1][$imgindex] . '="cid:' . $cid . '"',
+                        $message
+                    );
+                    continue;
+                }
+                if (
+                    //Only process relative URLs if a basedir is provided (i.e. no absolute local paths)
+                    !empty($basedir)
+                    //Ignore URLs containing parent dir traversal (..)
+                    && (strpos($url, '..') === false)
+                    //Do not change urls that are already inline images
+                    && 0 !== strpos($url, 'cid:')
+                    //Do not change absolute URLs, including anonymous protocol
+                    && !preg_match('#^[a-z][a-z0-9+.-]*:?//#i', $url)
+                ) {
+                    $filename = static::mb_pathinfo($url, PATHINFO_BASENAME);
+                    $directory = dirname($url);
+                    if ('.' === $directory) {
+                        $directory = '';
+                    }
+                    //RFC2392 S 2
+                    $cid = substr(hash('sha256', $url), 0, 32) . '@phpmailer.0';
+                    if (strlen($basedir) > 1 && '/' !== substr($basedir, -1)) {
+                        $basedir .= '/';
+                    }
+                    if (strlen($directory) > 1 && '/' !== substr($directory, -1)) {
+                        $directory .= '/';
+                    }
+                    if (
+                        $this->addEmbeddedImage(
+                            $basedir . $directory . $filename,
+                            $cid,
+                            $filename,
+                            static::ENCODING_BASE64,
+                            static::_mime_types((string) static::mb_pathinfo($filename, PATHINFO_EXTENSION))
+                        )
+                    ) {
+                        $message = preg_replace(
+                            '/' . $images[1][$imgindex] . '=["\']' . preg_quote($url, '/') . '["\']/Ui',
+                            $images[1][$imgindex] . '="cid:' . $cid . '"',
+                            $message
+                        );
+                    }
+                }
+            }
+        }
+        $this->isAMP();
+        //Convert all message body line breaks to LE, makes quoted-printable encoding work much better
+        $this->AmpBody = static::normalizeBreaks($message);
+        $this->AltBody = static::normalizeBreaks($this->html2text($message, $advanced));
+        if (!$this->alternativeExists()) {
+            $this->AltBody = 'This is an AMP-only message. To view it, activate AMP in your email application.'
+                . static::$LE;
+        }
+        return $this->AmpBody;
     }
 
     /**
@@ -4675,7 +4906,7 @@ class PHPMailer
      * Multi-byte-safe pathinfo replacement.
      * Drop-in replacement for pathinfo(), but multibyte- and cross-platform-safe.
      *
-     * @see https://www.php.net/manual/en/function.pathinfo.php#107461
+     * @see http://www.php.net/manual/en/function.pathinfo.php#107461
      *
      * @param string     $path    A filename or path, does not need to exist as a file
      * @param int|string $options Either a PATHINFO_* constant,
@@ -4934,7 +5165,7 @@ class PHPMailer
             if (strpos($line, ':') === false) {
                 continue;
             }
-            list($heading, $value) = explode(':', $line, 2);
+            [$heading, $value] = explode(':', $line, 2);
             //Lower-case header name
             $heading = strtolower($heading);
             //Collapse white space within the value, also convert WSP to space
