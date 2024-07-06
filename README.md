@@ -25,7 +25,7 @@ composer require phpmailer-amp/phpmailer-amp
 
 ```php
 <?php
-use PHPMailer\PHPMailer-AMP\PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 ```
 
 ## An example how to send message with AMP content

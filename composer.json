@@ -1,8 +1,12 @@
 {
-    "name": "phpmailer/phpmailer",
+    "name": "phpmailer-amp/phpmailer-amp",
     "type": "library",
-    "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
+    "description": "PHPMailer-AMP is the same PHPMailer library with AMP content support",
     "authors": [
+        {
+            "name": "David Gegiya",
+            "email": "davidik.gegiya@gmail.com"
+        },
         {
             "name": "Marcus Bointon",
             "email": "phpmailer@synchromedia.co.uk"
@@ -17,12 +21,6 @@
         },
         {
             "name": "Brent R. Matzelle"
-        }
-    ],
-    "funding": [
-        {
-            "url": "https://github.com/Synchro",
-            "type": "github"
         }
     ],
     "config": {

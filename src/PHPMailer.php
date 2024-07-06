@@ -4,8 +4,9 @@
  * PHPMailer - PHP email creation and transport class.
  * PHP Version 5.5.
  *
- * @see https://github.com/PHPMailer/PHPMailer/ The PHPMailer GitHub project
+ * @see https://github.com/davidgegiya/PHPMailer-AMP The PHPMailer-AMP GitHub project
  *
+ * @author    David Gegiya <davidik.gegiya@gmail.com>
  * @author    Marcus Bointon (Synchro/coolbru) <phpmailer@synchromedia.co.uk>
  * @author    Jim Jagielski (jimjag) <jimjag@gmail.com>
  * @author    Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
@@ -24,6 +25,7 @@ namespace PHPMailer\PHPMailer;
 /**
  * PHPMailer - PHP email creation and transport class.
  *
+ * @author David Gegiya <davidik.gegiya@gmail.com>
  * @author Marcus Bointon (Synchro/coolbru) <phpmailer@synchromedia.co.uk>
  * @author Jim Jagielski (jimjag) <jimjag@gmail.com>
  * @author Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
