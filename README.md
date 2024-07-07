@@ -34,9 +34,9 @@ use PHPMailerAMP\PHPMailerAMP;
 <?php
 //Import PHPMailer classes into the global namespace
 //These must be at the top of your script, not inside a function
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
+use PHPMailerAMP\PHPMailerAMP\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\SMTP;
+use PHPMailerAMP\PHPMailerAMP\Exception;
 
 //Load Composer's autoloader
 require 'vendor/autoload.php';
