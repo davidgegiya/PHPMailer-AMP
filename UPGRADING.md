@@ -32,7 +32,7 @@ require 'vendor/autoload.php';
 If you're not using composer, you can still load the classes manually, depending on what you're using:
 
 ```php
-require 'src/PHPMailer.php';
+require 'src/PHPMailerAMP.php';
 require 'src/SMTP.php';
 require 'src/Exception.php';
 ```

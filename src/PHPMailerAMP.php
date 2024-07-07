@@ -20,7 +20,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-namespace PHPMailer\PHPMailer;
+namespace PHPMailerAMP\PHPMailerAMP;
 
 /**
  * PHPMailer - PHP email creation and transport class.
@@ -31,7 +31,7 @@ namespace PHPMailer\PHPMailer;
  * @author Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
  * @author Brent R. Matzelle (original founder)
  */
-class PHPMailer
+class PHPMailerAMP
 {
     const CHARSET_ASCII = 'us-ascii';
     const CHARSET_ISO88591 = 'iso-8859-1';
@@ -252,7 +252,7 @@ class PHPMailer
      * $_SERVER['SERVER_NAME'], gethostname(), php_uname('n'), or the value
      * 'localhost.localdomain'.
      *
-     * @see PHPMailer::$Helo
+     * @see PHPMailerAMP::$Helo
      *
      * @var string
      */
@@ -304,7 +304,7 @@ class PHPMailer
      * Default is $Hostname. If $Hostname is empty, PHPMailer attempts to find
      * one with the same method described above for $Hostname.
      *
-     * @see PHPMailer::$Hostname
+     * @see PHPMailerAMP::$Hostname
      *
      * @var string
      */
@@ -331,8 +331,8 @@ class PHPMailer
      * Whether to use SMTP authentication.
      * Uses the Username and Password properties.
      *
-     * @see PHPMailer::$Username
-     * @see PHPMailer::$Password
+     * @see PHPMailerAMP::$Username
+     * @see PHPMailerAMP::$Password
      *
      * @var bool
      */
@@ -591,7 +591,7 @@ class PHPMailer
      * May be a callable to inject your own validator, but there are several built-in validators.
      * The default validator uses PHP's FILTER_VALIDATE_EMAIL filter_var option.
      *
-     * @see PHPMailer::validateAddress()
+     * @see PHPMailerAMP::validateAddress()
      *
      * @var string|callable
      */
@@ -636,9 +636,9 @@ class PHPMailer
      * An array of all kinds of addresses.
      * Includes all of $to, $cc, $bcc.
      *
-     * @see PHPMailer::$to
-     * @see PHPMailer::$cc
-     * @see PHPMailer::$bcc
+     * @see PHPMailerAMP::$to
+     * @see PHPMailerAMP::$cc
+     * @see PHPMailerAMP::$bcc
      *
      * @var array
      */
@@ -650,10 +650,10 @@ class PHPMailer
      * and one of $to, $cc, or $bcc.
      * This array is used only for addresses with IDN.
      *
-     * @see PHPMailer::$to
-     * @see PHPMailer::$cc
-     * @see PHPMailer::$bcc
-     * @see PHPMailer::$all_recipients
+     * @see PHPMailerAMP::$to
+     * @see PHPMailerAMP::$cc
+     * @see PHPMailerAMP::$bcc
+     * @see PHPMailerAMP::$all_recipients
      *
      * @var array
      */
@@ -664,7 +664,7 @@ class PHPMailer
      * In send(), valid and non duplicate entries are moved to $ReplyTo.
      * This array is used only for addresses with IDN.
      *
-     * @see PHPMailer::$ReplyTo
+     * @see PHPMailerAMP::$ReplyTo
      *
      * @var array
      */
@@ -901,10 +901,10 @@ class PHPMailer
      * Output debugging info via a user-defined method.
      * Only generates output if debug output is enabled.
      *
-     * @see PHPMailer::$Debugoutput
-     * @see PHPMailer::$SMTPDebug
-     *
      * @param string $str
+     *@see PHPMailerAMP::$SMTPDebug
+     *
+     * @see PHPMailerAMP::$Debugoutput
      */
     protected function edebug($str)
     {
@@ -1483,11 +1483,11 @@ class PHPMailer
      * - Conversion to punycode is impossible (e.g. required PHP functions are not available)
      *   or fails for any reason (e.g. domain contains characters not allowed in an IDN).
      *
-     * @see PHPMailer::$CharSet
-     *
      * @param string $address The email address to convert
      *
      * @return string The encoded address in ASCII form
+     *@see PHPMailerAMP::$CharSet
+     *
      */
     public function punyencodeAddress($address)
     {
@@ -1738,14 +1738,14 @@ class PHPMailer
     /**
      * Send mail using the $Sendmail program.
      *
-     * @see PHPMailer::$Sendmail
-     *
      * @param string $header The message headers
      * @param string $body   The message body
      *
-     * @throws Exception
-     *
      * @return bool
+     *@throws Exception
+     *
+     * @see PHPMailerAMP::$Sendmail
+     *
      */
     protected function sendmailSend($header, $body)
     {
@@ -2068,16 +2068,16 @@ class PHPMailer
      * Send mail via SMTP.
      * Returns false if there is a bad MAIL FROM, RCPT, or DATA input.
      *
-     * @see PHPMailer::setSMTPInstance() to use a different class.
-     *
-     * @uses \PHPMailer\PHPMailer\SMTP
-     *
      * @param string $header The message headers
      * @param string $body   The message body
      *
-     * @throws Exception
-     *
      * @return bool
+     *@throws Exception
+     *
+     * @see PHPMailerAMP::setSMTPInstance() to use a different class.
+     *
+     * @uses \PHPMailer\PHPMailer\SMTP
+     *
      */
     protected function smtpSend($header, $body)
     {
@@ -2841,9 +2841,9 @@ class PHPMailer
      * Includes complete headers and body.
      * Only valid post preSend().
      *
-     * @see PHPMailer::preSend()
-     *
      * @return string
+     * @see PHPMailerAMP::preSend()
+     *
      */
     public function getSentMIMEMessage()
     {
@@ -4505,7 +4505,7 @@ class PHPMailer
      *
      * @throws Exception
      *
-     * @see PHPMailer::html2text()
+     * @see PHPMailerAMP::html2text()
      */
     public function msgHTML($message, $basedir = '', $advanced = false)
     {
@@ -4620,7 +4620,7 @@ class PHPMailer
      *
      * @throws Exception
      *
-     * @see PHPMailer::html2text()
+     * @see PHPMailerAMP::html2text()
      */
     public function msgAMP($message, $basedir = '', $advanced = false)
     {

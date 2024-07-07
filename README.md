@@ -25,7 +25,7 @@ composer require phpmailer-amp/phpmailer-amp
 
 ```php
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP;
 ```
 
 ## An example how to send message with AMP content
@@ -42,7 +42,7 @@ use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 
 //Create an instance; passing `true` enables exceptions
-$mail = new PHPMailer(true);
+$mail = new PHPMailerAMP(true);
 
 try {
     //Server settings
