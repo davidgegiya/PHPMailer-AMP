@@ -1092,7 +1092,7 @@ class PHPMailerAMP
 
     /**
      * Add an address to one of the recipient arrays or to the ReplyTo array. Because PHPMailer
-     * can't validate addresses with an IDN without knowing the PHPMailer::$CharSet (that can still
+     * can't validate addresses with an IDN without knowing the PHPMailerAMP::$CharSet (that can still
      * be modified after calling this function), addition of such addresses is delayed until send().
      * Addresses that have been added already return false, but do not throw exceptions.
      *
@@ -1133,7 +1133,7 @@ class PHPMailerAMP
             $name = '';
         }
         $params = [$kind, $address, $name];
-        //Enqueue addresses with IDN until we know the PHPMailer::$CharSet.
+        //Enqueue addresses with IDN until we know the PHPMailerAMP::$CharSet.
         //Domain is assumed to be whatever is after the last @ symbol in the address
         if (static::idnSupported() && $this->has8bitChars(substr($address, ++$pos))) {
             if ('Reply-To' !== $kind) {
@@ -1391,12 +1391,12 @@ class PHPMailerAMP
      * Alternatively you may pass in a callable to inject your own validator, for example:
      *
      * ```php
-     * PHPMailer::validateAddress('user@example.com', function($address) {
+     * PHPMailerAMP::validateAddress('user@example.com', function($address) {
      *     return (strpos($address, '@') !== false);
      * });
      * ```
      *
-     * You can also set the PHPMailer::$validator static to a callable, allowing built-in methods to use your validator.
+     * You can also set the PHPMailerAMP::$validator static to a callable, allowing built-in methods to use your validator.
      *
      * @param string          $address       The email address to check
      * @param string|callable $patternselect Which pattern to use
@@ -1477,7 +1477,7 @@ class PHPMailerAMP
 
     /**
      * Converts IDN in given email address to its ASCII form, also known as punycode, if possible.
-     * Important: Address must be passed in same encoding as currently set in PHPMailer::$CharSet.
+     * Important: Address must be passed in same encoding as currently set in PHPMailerAMP::$CharSet.
      * This function silently returns unmodified address if:
      * - No conversion is necessary (i.e. domain name is not an IDN, or is already in ASCII form)
      * - Conversion to punycode is impossible (e.g. required PHP functions are not available)
@@ -2076,7 +2076,7 @@ class PHPMailerAMP
      *
      * @see PHPMailerAMP::setSMTPInstance() to use a different class.
      *
-     * @uses \PHPMailer\PHPMailer\SMTP
+     * @uses \PHPMailerAMP\PHPMailerAMP\SMTP
      *
      */
     protected function smtpSend($header, $body)
@@ -2163,7 +2163,7 @@ class PHPMailerAMP
      *
      * @throws Exception
      *
-     * @uses \PHPMailer\PHPMailer\SMTP
+     * @uses \PHPMailerAMP\PHPMailerAMP\SMTP
      *
      * @return bool
      */
