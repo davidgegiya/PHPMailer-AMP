@@ -368,7 +368,7 @@ class PHPMailerAMP
     public $AuthType = '';
 
     /**
-     * SMTP SMTPXClient command attibutes
+     * SMTP SMTPXClient command attributes
      *
      * @var array
      */
