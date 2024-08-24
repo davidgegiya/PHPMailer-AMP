@@ -975,7 +975,7 @@ class PHPMailerAMP
      *
      * @param bool $isAMP True for AMP mode
      */
-    public function isAMP(bool $isAMP = true)
+    public function isAMP($isAMP = true)
     {
         if ($isAMP) {
             $this->ContentType = static::CONTENT_TYPE_AMP;
@@ -1294,7 +1294,7 @@ class PHPMailerAMP
                         ];
                     }
                 } else {
-                    [$name, $email] = explode('<', $address);
+                    list($name, $email) = explode('<', $address);
                     $email = trim(str_replace('>', '', $email));
                     $name = trim($name);
                     if (static::validateAddress($email)) {
@@ -2814,6 +2814,14 @@ class PHPMailerAMP
                 $result .= $this->headerLine('Content-Type', static::CONTENT_TYPE_MULTIPART_ALTERNATIVE . ';');
                 $result .= $this->textLine(' boundary="' . $this->boundary[1] . '"');
                 break;
+            case 'alt_amp_inline':
+            case 'alt_amp_inline_attach':
+            case 'alt_amp_attach':
+                $result .= $this->headerLine('Content-Type', static::CONTENT_TYPE_MULTIPART_MIXED . ';');
+                $result .= $this->textLine(' boundary="' . $this->boundary[1] . '"');
+                $result .= $this->headerLine('Content-Type', static::CONTENT_TYPE_MULTIPART_ALTERNATIVE . ';');
+                $result .= $this->textLine(' boundary="' . $this->boundary[2] . '"');
+                break;
             default:
                 //Catches case 'plain': and case '':
                 $result .= $this->textLine('Content-Type: ' . $this->ContentType . '; charset=' . $this->CharSet);
@@ -3162,6 +3170,168 @@ class PHPMailerAMP
                     static::CONTENT_TYPE_TEXT_HTML,
                     $bodyEncoding
                 );
+                $body .= $this->encodeString($this->Body, $bodyEncoding);
+                $body .= static::$LE;
+                $body .= $this->attachAll('inline', $this->boundary[3]);
+                $body .= static::$LE;
+                $body .= $this->endBoundary($this->boundary[2]);
+                $body .= static::$LE;
+                $body .= $this->attachAll('attachment', $this->boundary[1]);
+                break;
+            case 'alt_amp_inline':
+                $body .= $mimepre;
+                $body .= $this->getBoundary(
+                    $this->boundary[1],
+                    $altBodyCharSet,
+                    static::CONTENT_TYPE_PLAINTEXT,
+                    $altBodyEncoding
+                );
+                $body .= $this->encodeString($this->AltBody, $altBodyEncoding);
+                $body .= static::$LE;
+                $body .= $this->getBoundary(
+                    $this->boundary[1],
+                    $ampBodyCharSet,
+                    static::CONTENT_TYPE_AMP,
+                    $ampBodyEncoding
+                );
+                $body .= $this->encodeString($this->AmpBody, $ampBodyEncoding);
+                $body .= static::$LE;
+                $body .= $this->headerLine('Content-Type', static::CONTENT_TYPE_MULTIPART_RELATED . ';');
+                $body .= $this->textLine(' boundary="' . $this->boundary[2] . '";');
+                $body .= $this->textLine(' type="' . static::CONTENT_TYPE_TEXT_HTML . '"');
+                $body .= static::$LE;
+                $body .= $this->getBoundary(
+                    $this->boundary[2],
+                    $bodyCharSet,
+                    static::CONTENT_TYPE_TEXT_HTML,
+                    $bodyEncoding
+                );
+                $body .= $this->encodeString($this->Body, $bodyEncoding);
+                $body .= static::$LE;
+                if (!empty($this->Ical)) {
+                    $method = static::ICAL_METHOD_REQUEST;
+                    foreach (static::$IcalMethods as $imethod) {
+                        if (stripos($this->Ical, 'METHOD:' . $imethod) !== false) {
+                            $method = $imethod;
+                            break;
+                        }
+                    }
+                    $body .= $this->getBoundary(
+                        $this->boundary[1],
+                        '',
+                        static::CONTENT_TYPE_TEXT_CALENDAR . '; method=' . $method,
+                        ''
+                    );
+                    $body .= $this->encodeString($this->Ical, $this->Encoding);
+                    $body .= static::$LE;
+                }
+                $body .= $this->attachAll('inline', $this->boundary[2]);
+                $body .= static::$LE;
+                $body .= $this->endBoundary($this->boundary[1]);
+                break;
+            case 'alt_amp_attach':
+                $body .= $mimepre;
+                $body .= $this->textLine('--' . $this->boundary[1]);
+                $body .= $this->headerLine('Content-Type', static::CONTENT_TYPE_MULTIPART_ALTERNATIVE . ';');
+                $body .= $this->textLine(' boundary="' . $this->boundary[2] . '"');
+                $body .= static::$LE;
+                $body .= $this->getBoundary(
+                    $this->boundary[2],
+                    $altBodyCharSet,
+                    static::CONTENT_TYPE_PLAINTEXT,
+                    $altBodyEncoding
+                );
+                $body .= $this->encodeString($this->AltBody, $altBodyEncoding);
+                $body .= static::$LE;
+                $body .= $this->getBoundary(
+                    $this->boundary[2],
+                    $ampBodyCharSet,
+                    static::CONTENT_TYPE_AMP,
+                    $ampBodyEncoding
+                );
+                $body .= $this->encodeString($this->AmpBody, $ampBodyEncoding);
+                $body .= static::$LE;
+                $body .= $this->getBoundary(
+                    $this->boundary[2],
+                    $bodyCharSet,
+                    static::CONTENT_TYPE_TEXT_HTML,
+                    $bodyEncoding
+                );
+                $body .= $this->encodeString($this->Body, $bodyEncoding);
+                $body .= static::$LE;
+                if (!empty($this->Ical)) {
+                    $method = static::ICAL_METHOD_REQUEST;
+                    foreach (static::$IcalMethods as $imethod) {
+                        if (stripos($this->Ical, 'METHOD:' . $imethod) !== false) {
+                            $method = $imethod;
+                            break;
+                        }
+                    }
+                    $body .= $this->getBoundary(
+                        $this->boundary[2],
+                        '',
+                        static::CONTENT_TYPE_TEXT_CALENDAR . '; method=' . $method,
+                        ''
+                    );
+                    $body .= $this->encodeString($this->Ical, $this->Encoding);
+                    $body .= static::$LE;
+                }
+                $body .= $this->endBoundary($this->boundary[2]);
+                $body .= static::$LE;
+                $body .= $this->attachAll('attachment', $this->boundary[1]);
+                break;
+            case 'alt_amp_inline_attach':
+                $body .= $mimepre;
+                $body .= $this->textLine('--' . $this->boundary[1]);
+                $body .= $this->headerLine('Content-Type', static::CONTENT_TYPE_MULTIPART_ALTERNATIVE . ';');
+                $body .= $this->textLine(' boundary="' . $this->boundary[2] . '"');
+                $body .= static::$LE;
+                $body .= $this->getBoundary(
+                    $this->boundary[2],
+                    $altBodyCharSet,
+                    static::CONTENT_TYPE_PLAINTEXT,
+                    $altBodyEncoding
+                );
+                $body .= $this->encodeString($this->AltBody, $altBodyEncoding);
+                $body .= static::$LE;
+                $body .= $this->getBoundary(
+                    $this->boundary[2],
+                    $ampBodyCharSet,
+                    static::CONTENT_TYPE_AMP,
+                    $ampBodyEncoding
+                );
+                $body .= $this->encodeString($this->AmpBody, $ampBodyEncoding);
+                $body .= static::$LE;
+                $body .= $this->textLine('--' . $this->boundary[2]);
+                $body .= $this->headerLine('Content-Type', static::CONTENT_TYPE_MULTIPART_RELATED . ';');
+                $body .= $this->textLine(' boundary="' . $this->boundary[3] . '";');
+                $body .= $this->textLine(' type="' . static::CONTENT_TYPE_TEXT_HTML . '"');
+                $body .= static::$LE;
+                $body .= $this->getBoundary(
+                    $this->boundary[3],
+                    $bodyCharSet,
+                    static::CONTENT_TYPE_TEXT_HTML,
+                    $bodyEncoding
+                );
+                $body .= $this->encodeString($this->Body, $bodyEncoding);
+                $body .= static::$LE;
+                if (!empty($this->Ical)) {
+                    $method = static::ICAL_METHOD_REQUEST;
+                    foreach (static::$IcalMethods as $imethod) {
+                        if (stripos($this->Ical, 'METHOD:' . $imethod) !== false) {
+                            $method = $imethod;
+                            break;
+                        }
+                    }
+                    $body .= $this->getBoundary(
+                        $this->boundary[3],
+                        '',
+                        static::CONTENT_TYPE_TEXT_CALENDAR . '; method=' . $method,
+                        ''
+                    );
+                    $body .= $this->encodeString($this->Ical, $this->Encoding);
+                    $body .= static::$LE;
+                }
                 $body .= $this->encodeString($this->Body, $bodyEncoding);
                 $body .= static::$LE;
                 $body .= $this->attachAll('inline', $this->boundary[3]);
@@ -4229,7 +4399,7 @@ class PHPMailerAMP
     {
         if (null === $value && strpos($name, ':') !== false) {
             //Value passed in as name:value
-            [$name, $value] = explode(':', $name, 2);
+            list($name, $value) = explode(':', $name, 2);
         }
         $name = trim($name);
         $value = (null === $value) ? null : trim($value);
@@ -4261,7 +4431,7 @@ class PHPMailerAMP
     {
         if (null === $value && strpos($name, ':') !== false) {
             //Value passed in as name:value
-            [$name, $value] = explode(':', $name, 2);
+            list($name, $value) = explode(':', $name, 2);
         }
         $name = trim($name);
         $value = (null === $value) ? '' : trim($value);
@@ -4459,7 +4629,7 @@ class PHPMailerAMP
     {
         if (null === $value && strpos($name, ':') !== false) {
             //Value passed in as name:value
-            [$name, $value] = explode(':', $name, 2);
+            list($name, $value) = explode(':', $name, 2);
         }
         $name = trim($name);
         $value = (null === $value) ? '' : trim($value);
@@ -5167,7 +5337,7 @@ class PHPMailerAMP
             if (strpos($line, ':') === false) {
                 continue;
             }
-            [$heading, $value] = explode(':', $line, 2);
+            list($heading, $value) = explode(':', $line, 2);
             //Lower-case header name
             $heading = strtolower($heading);
             //Collapse white space within the value, also convert WSP to space

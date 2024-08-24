@@ -5,7 +5,7 @@
 - `AMPBody` property
 - `isAMP()` function
 - Building function `msgAMP()`
-- 2 new message types - amp and amp_alt (mixed plain text, html and amp content)
+- 5 new message types - amp, alt_amp, alt_amp_inline, alt_amp_attach and alt_amp_inline_attach (mixed plain text, html and amp content and html, amp with attachments)
 
 ## License
 This software is distributed under the [LGPL 2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html) license, along with the [GPL Cooperation Commitment](https://gplcc.github.io/gplcc/). Please read [LICENSE](https://github.com/PHPMailer/PHPMailer/blob/master/LICENSE) for information on the software availability and distribution.
@@ -14,7 +14,7 @@ This software is distributed under the [LGPL 2.1](https://www.gnu.org/licenses/o
 PHPMailer is available on [Packagist](https://packagist.org/packages/phpmailer/phpmailer) (using semantic versioning), and installation via [Composer](https://getcomposer.org) is the recommended way to install PHPMailer. Just add this line to your `composer.json` file:
 
 ```json
-"phpmailer-amp/phpmailer-amp": "^1.0.0"
+"phpmailer-amp/phpmailer-amp": "^1.1.0"
 ```
 
 or run
@@ -83,5 +83,6 @@ try {
 ```
 ## Feature plans
 
-- Attachments support with AMP messages
 - Code refactoring
+
+#### Forked from PHPMailer `v.6.9.1`
