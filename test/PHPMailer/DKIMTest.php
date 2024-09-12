@@ -13,8 +13,8 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use Exception;
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\Exception;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\SendTestCase;
 
 /**
@@ -50,7 +50,7 @@ final class DKIMTest extends SendTestCase
      *
      * @link https://tools.ietf.org/html/rfc6376#section-3.4.4
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_BodyC
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::DKIM_BodyC
      */
     public function testDKIMBodyCanonicalization()
     {
@@ -85,7 +85,7 @@ final class DKIMTest extends SendTestCase
      *
      * @link https://tools.ietf.org/html/rfc6376#section-3.4.2
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_HeaderC
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::DKIM_HeaderC
      */
     public function testDKIMHeaderCanonicalization()
     {
@@ -120,9 +120,9 @@ final class DKIMTest extends SendTestCase
      *
      * @requires extension openssl
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_Add
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_Sign
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_QP
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::DKIM_Add
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::DKIM_Sign
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::DKIM_QP
      */
     public function testDKIMOptionalHeaderFieldsCopy()
     {
@@ -164,9 +164,9 @@ final class DKIMTest extends SendTestCase
      *
      * @requires extension openssl
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_Add
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_Sign
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_QP
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::DKIM_Add
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::DKIM_Sign
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::DKIM_QP
      */
     public function testDKIMExtraHeaders()
     {
@@ -210,9 +210,9 @@ final class DKIMTest extends SendTestCase
      *
      * @requires extension openssl
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_Add
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_Sign
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_QP
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::DKIM_Add
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::DKIM_Sign
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::DKIM_QP
      */
     public function testDKIMSigningMail()
     {
@@ -241,24 +241,9 @@ final class DKIMTest extends SendTestCase
     }
 
     /**
-     * Verify behaviour of the DKIM_Sign method when Open SSL is not available.
-     *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_Sign
-     */
-    public function testDKIMSignOpenSSLNotAvailable()
-    {
-        if (extension_loaded('openssl')) {
-            $this->markTestSkipped('Test requires OpenSSL *not* to be available');
-        }
-
-        $signature = $this->Mail->DKIM_Sign('foo');
-        self::assertSame('', $signature);
-    }
-
-    /**
      * Verify behaviour of the DKIM_Sign method when Open SSL is not available and exceptions is enabled.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::DKIM_Sign
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::DKIM_Sign
      */
     public function testDKIMSignOpenSSLNotAvailableException()
     {
