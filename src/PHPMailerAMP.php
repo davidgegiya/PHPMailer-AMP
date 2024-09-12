@@ -4538,7 +4538,7 @@ class PHPMailerAMP
             empty($host)
             || !is_string($host)
             || strlen($host) > 256
-            || !preg_match('/^([a-zA-Z\d.-]*|\[[a-fA-F\d:]+\])$/', $host)
+            || !preg_match('/^([a-z\d.-]*|\[[a-f\d:]+\])$/i', $host)
         ) {
             return false;
         }
