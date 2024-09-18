@@ -13,9 +13,9 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
+use PHPMailerAMP\PHPMailerAMP\Exception;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\SMTP;
 use PHPMailer\Test\SendTestCase;
 
 /**
@@ -1258,13 +1258,12 @@ EOT;
         $this->Mail->smtpClose();
     }
 
+    /**
+     * @requires extension mbstring
+     * @requires function idn_to_ascii
+     */
     public function testGivenIdnAddress_addAddress_returns_true()
     {
-        if (file_exists(\PHPMAILER_INCLUDE_DIR . '/test/fakefunctions.php') === false) {
-            $this->markTestSkipped('/test/fakefunctions.php file not found');
-        }
-
-        include \PHPMAILER_INCLUDE_DIR . '/test/fakefunctions.php';
         $this->assertTrue($this->Mail->addAddress('test@françois.ch'));
     }
 
