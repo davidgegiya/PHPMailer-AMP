@@ -13,7 +13,7 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
@@ -27,7 +27,7 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  *       There should also be a test to make sure that `auto` and `noregex` correctly
  *       fall through to the default validation.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::validateAddress
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::validateAddress
  */
 final class ValidateAddressTest extends TestCase
 {
@@ -438,7 +438,7 @@ final class ValidateAddressTest extends TestCase
             'first.last@phplíst.com',
         ];
 
-        return $this->arrayToNamedDataProvider($unicodeaddresses, 'Invalid unicode: ');
+        return $this->arrayToNamedDataProvider($unicodeaddresses, 'Invalid Unicode: ');
     }
 
     /**
