@@ -1469,13 +1469,16 @@ class PHPMailerAMP
                 );
             case 'eai':
                 /*
-                 * This is the pattern used in the HTML5 spec for validation of 'email' type form input elements, modified to accept unicode email addresses. This is also more lenient than Firefox' html5 spec, in order to make the regex faster.
+                 * This is the pattern used in the HTML5 spec for validation of 'email' type
+                 * form input elements (as above), modified to accept Unicode email addresses.
+                 * This is also more lenient than Firefox' html5 spec, in order to make the regex faster.
                  *
                  * @see https://html.spec.whatwg.org/#e-mail-state-(type=email)
                  */
                 return (bool) preg_match(
                     '/^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~\x80-\xff-]+@[a-zA-Z0-9\x80-\xff](?:[a-zA-Z0-9\x80-\xff-]{0,61}' .
-                    '[a-zA-Z0-9\x80-\xff])?(?:\.[a-zA-Z0-9\x80-\xff](?:[a-zA-Z0-9\x80-\xff-]{0,61}[a-zA-Z0-9\x80-\xff])?)*$/sD',
+                    '[a-zA-Z0-9\x80-\xff])?(?:\.[a-zA-Z0-9\x80-\xff]' .
+                    '(?:[a-zA-Z0-9\x80-\xff-]{0,61}[a-zA-Z0-9\x80-\xff])?)*$/sD',
                     $address
                 );
             case 'php':
@@ -1617,11 +1620,13 @@ class PHPMailerAMP
             //unicode in the localparts of any addresses, it is sent
             //using SMTPUTF8. If not, it it sent using
             //pynycode-encoded domains and plain SMTP.
-            if (static::CHARSET_UTF8 === strtolower($this->CharSet) &&
+            if (
+                static::CHARSET_UTF8 === strtolower($this->CharSet) &&
                 ($this->anyAddressHasUnicodeLocalpart($this->RecipientsQueue) ||
                  $this->anyAddressHasUnicodeLocalpart(array_keys($this->all_recipients)) ||
                  $this->anyAddressHasUnicodeLocalpart($this->ReplyToQueue) ||
-                 $this->addressHasUnicodeLocalpart($this->From))) {
+                 $this->addressHasUnicodeLocalpart($this->From))
+            ) {
                 $this->UseSMTPUTF8 = true;
             }
             //Dequeue recipient and Reply-To addresses with IDN
@@ -4599,7 +4604,7 @@ class PHPMailerAMP
      */
     protected function addressHasUnicodeLocalpart($address)
     {
-        return (bool) preg_match( '/[\x80-\xFF].*@/', $address);
+        return (bool) preg_match('/[\x80-\xFF].*@/', $address);
     }
 
     /**
