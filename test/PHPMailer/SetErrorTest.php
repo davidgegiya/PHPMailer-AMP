@@ -13,14 +13,14 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\SMTP;
+use PHPMailerAMP\PHPMailerAMP\SMTP;
 use PHPMailer\Test\TestCase;
 
 /**
  * Test error registration functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::isError
- * @covers \PHPMailer\PHPMailer\PHPMailer::setError
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::isError
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::setError
  */
 final class SetErrorTest extends TestCase
 {
@@ -111,7 +111,7 @@ final class SetErrorTest extends TestCase
                     'smtp_code'    => '',
                     'smtp_code_ex' => '',
                 ],
-                'expected' => 'Cannot set or reset variable: nonexistentpropertySMTP server error: Fake error',
+                'expected' => 'Cannot set or reset variable: nonexistentproperty SMTP server error: Fake error',
             ],
             'SMTP error, full details' => [
                 'mockReturn' => [
@@ -120,7 +120,7 @@ final class SetErrorTest extends TestCase
                     'smtp_code'    => 'Fake code',
                     'smtp_code_ex' => 'Fake code ex',
                 ],
-                'expected' => 'Cannot set or reset variable: nonexistentpropertySMTP server error: '
+                'expected' => 'Cannot set or reset variable: nonexistentproperty SMTP server error: '
                     . 'Fake error Detail: Fake detail SMTP code: Fake code Additional SMTP info: Fake code ex',
             ],
         ];
