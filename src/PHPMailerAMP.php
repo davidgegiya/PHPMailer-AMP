@@ -1201,6 +1201,8 @@ class PHPMailerAMP
             self::$validator === 'php' &&
             $this->addressHasUnicodeLocalPart($address)
         ) {
+            //The caller has not altered the validator, so assume that they want UTF-8 support
+            //instead of failing
             $this->CharSet = self::CHARSET_UTF8;
             self::$validator = 'eai';
         }
