@@ -1199,10 +1199,10 @@ class PHPMailerAMP
     {
         if (
             self::$validator === 'php' &&
-            $this->addressHasUnicodeLocalPart($address)
+            ((bool) preg_match('/[\x80-\xFF]/', $address))
         ) {
-            //The caller has not altered the validator, so assume that they want UTF-8 support
-            //instead of failing
+            //The caller has not altered the validator and is sending to an address
+            //with UTF-8, so assume that they want UTF-8 support instead of failing
             $this->CharSet = self::CHARSET_UTF8;
             self::$validator = 'eai';
         }
@@ -1493,9 +1493,9 @@ class PHPMailerAMP
                  * @see https://en.wikipedia.org/wiki/International_email
                  */
                 return (bool) preg_match(
-                    '/^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~\x80-\xff-]+@[a-zA-Z0-9\x80-\xff](?:[a-zA-Z0-9\x80-\xff-]{0,61}' .
-                    '[a-zA-Z0-9\x80-\xff])?(?:\.[a-zA-Z0-9\x80-\xff]' .
-                    '(?:[a-zA-Z0-9\x80-\xff-]{0,61}[a-zA-Z0-9\x80-\xff])?)*$/sD',
+                    '/^[-\p{L}\p{N}\p{M}.!#$%&\'*+\/=?^_`{|}~]+@[\p{L}\p{N}\p{M}](?:[\p{L}\p{N}\p{M}-]{0,61}' .
+                    '[\p{L}\p{N}\p{M}])?(?:\.[\p{L}\p{N}\p{M}]' .
+                    '(?:[-\p{L}\p{N}\p{M}]{0,61}[\p{L}\p{N}\p{M}])?)*$/usD',
                     $address
                 );
             case 'php':
