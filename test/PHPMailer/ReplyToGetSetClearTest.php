@@ -13,8 +13,8 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\Exception;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\PreSendTestCase;
 
 /**
@@ -25,10 +25,10 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
     /**
      * Test adding a non-IDN reply-to address.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addReplyTo
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addOrEnqueueAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::getReplyToAddresses
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addReplyTo
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addOrEnqueueAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::getReplyToAddresses
      *
      * @dataProvider dataAddReplyToValidAddressNonIdn
      *
@@ -124,8 +124,8 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
     /**
      * Test adding an invalid non-IDN reply-to address.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addOrEnqueueAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addOrEnqueueAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addAnAddress
      *
      * @dataProvider dataAddReplyToInvalidAddressNonIdn
      *
@@ -146,8 +146,8 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
     /**
      * Test receiving an excepting when adding an invalid non-IDN reply-to address.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addOrEnqueueAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addOrEnqueueAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addAnAddress
      *
      * @dataProvider dataAddReplyToInvalidAddressNonIdn
      *
@@ -178,9 +178,9 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
     /**
      * Test that the correct Reply-To message header has been added to the message.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addReplyTo
-     * @covers \PHPMailer\PHPMailer\PHPMailer::createHeader
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addrAppend
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addReplyTo
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::createHeader
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addrAppend
      *
      * @dataProvider dataReplyToInMessageHeader
      *
@@ -263,10 +263,10 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
      * - IDN addresses initially get enqueued.
      * - IDN addresses correctly get added during `preSend()`.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addReplyTo
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addOrEnqueueAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::preSend
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addReplyTo
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addOrEnqueueAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::preSend
      *
      * @requires extension mbstring
      * @requires function idn_to_ascii
@@ -303,8 +303,8 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
      * Tests that non-exact duplicate reply-to addresses do get enqueued (IDN),
      * but don't get added (IDN converted to punycode + non-IDN).
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addOrEnqueueAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addOrEnqueueAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addAnAddress
      *
      * @requires extension mbstring
      * @requires function idn_to_ascii
@@ -404,11 +404,11 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
      * an 8bit character is passed and either the MbString or the Intl extension are
      * not available.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addAnAddress
      */
     public function testAddReplyToFailsOn8BitCharInDomainWithoutOptionalExtensions()
     {
-        if (extension_loaded('mbstring') && function_exists('idn_to_ascii')) {
+        if (PHPMailer::idnSupported()) {
             $this->markTestSkipped('Test requires MbString and/or Intl *not* to be available');
         }
 
@@ -418,7 +418,7 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
     /**
      * Test successfully clearing out both the added as well as the queued Reply-to addresses.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::clearReplyTos
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::clearReplyTos
      *
      * @requires extension mbstring
      * @requires function idn_to_ascii
