@@ -13,7 +13,7 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
@@ -24,7 +24,7 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * on what these test cases should look like and should test, please see
  * {@link https://github.com/PHPMailer/PHPMailer/pull/2449} for context.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::parseAddresses
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::parseAddresses
  */
 final class ParseAddressesTest extends TestCase
 {
@@ -102,7 +102,7 @@ final class ParseAddressesTest extends TestCase
     public function testAddressSplittingNativeNoMbstring($addrstr, $expected, $charset = null)
     {
         if (extension_loaded('mbstring')) {
-            $this->markTestSkipped('Test requires MbString *not* to be available');
+            self::markTestSkipped('Test requires MbString *not* to be available');
         }
 
         if (isset($charset)) {
@@ -136,7 +136,7 @@ final class ParseAddressesTest extends TestCase
     public function testAddressSplittingImapNoMbstring($addrstr, $expected, $charset = null)
     {
         if (extension_loaded('mbstring')) {
-            $this->markTestSkipped('Test requires MbString *not* to be available');
+            self::markTestSkipped('Test requires MbString *not* to be available');
         }
 
         if (isset($charset)) {

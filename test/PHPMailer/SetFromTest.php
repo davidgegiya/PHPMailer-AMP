@@ -13,14 +13,14 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\Exception;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\TestCase;
 
 /**
  * Test setting the "from" address.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::setFrom
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::setFrom
  */
 final class SetFromTest extends TestCase
 {
@@ -194,7 +194,7 @@ final class SetFromTest extends TestCase
     public function testSetFromFailsOn8BitCharInDomainWithoutOptionalExtensions()
     {
         if (extension_loaded('mbstring') && function_exists('idn_to_ascii')) {
-            $this->markTestSkipped('Test requires MbString and/or Intl *not* to be available');
+            self::markTestSkipped('Test requires MbString and/or Intl *not* to be available');
         }
 
         $this->testSetFromFail("8bit@ex\x80mple.com");

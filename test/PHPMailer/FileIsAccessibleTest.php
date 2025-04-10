@@ -13,7 +13,7 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use ReflectionMethod;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
@@ -24,7 +24,7 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * with a valid UNC path. If someone can figure out a way to add a test for
  * that case, that would be awesome!}
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::fileIsAccessible
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::fileIsAccessible
  */
 final class FileIsAccessibleTest extends TestCase
 {
@@ -83,7 +83,7 @@ final class FileIsAccessibleTest extends TestCase
     {
         if (\DIRECTORY_SEPARATOR === '\\') {
             // Windows does not respect chmod permissions.
-            $this->markTestSkipped('This test requires a non-Windows OS.');
+            self::markTestSkipped('This test requires a non-Windows OS.');
         }
 
         $path = dirname(__DIR__) . '/Fixtures/FileIsAccessibleTest/';
