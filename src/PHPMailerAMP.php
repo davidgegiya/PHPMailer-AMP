@@ -1359,6 +1359,10 @@ class PHPMailerAMP
      */
     public function setFrom($address, $name = '', $auto = true)
     {
+        if (is_null($name)) {
+            //Helps avoid a deprecation warning in the preg_replace() below
+            $name = '';
+        }
         $address = trim((string)$address);
         $name = trim(preg_replace('/[\r\n]+/', '', $name)); //Strip breaks and trim
         //Don't validate now addresses with IDN. Will be done in send().
