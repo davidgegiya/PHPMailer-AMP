@@ -13,14 +13,14 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use ReflectionMethod;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * Test path validation functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::isPermittedPath
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::isPermittedPath
  */
 final class IsPermittedPathTest extends TestCase
 {
@@ -35,9 +35,9 @@ final class IsPermittedPathTest extends TestCase
     public function testIsPermittedPath($input, $expected)
     {
         $reflMethod = new ReflectionMethod(PHPMailer::class, 'isPermittedPath');
-        $reflMethod->setAccessible(true);
+        (\PHP_VERSION_ID < 80100) && $reflMethod->setAccessible(true);
         $result = $reflMethod->invoke(null, $input);
-        $reflMethod->setAccessible(false);
+        (\PHP_VERSION_ID < 80100) && $reflMethod->setAccessible(false);
 
         self::assertSame($expected, $result);
     }

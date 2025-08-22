@@ -13,9 +13,9 @@
 
 namespace PHPMailer\Test\OAuth;
 
-use PHPMailer\PHPMailer\OAuth;
-use PHPMailer\PHPMailer\OAuthTokenProvider;
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\OAuth;
+use PHPMailerAMP\PHPMailerAMP\OAuthTokenProvider;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
@@ -26,17 +26,17 @@ final class OAuthTest extends TestCase
     /**
      * Test OAuth class.
      *
-     * @covers PHPMailer\PHPMailer\PHPMailer::getOAuth
-     * @covers PHPMailer\PHPMailer\PHPMailer::setOAuth
-     * @covers PHPMailer\PHPMailer\OAuth::__construct
-     * @covers PHPMailer\PHPMailer\OAuthTokenProvider
+     * @covers PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::getOAuth
+     * @covers PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::setOAuth
+     * @covers PHPMailerAMP\PHPMailerAMP\OAuth::__construct
+     * @covers PHPMailerAMP\PHPMailerAMP\OAuthTokenProvider
      */
     public function testOAuth()
     {
         $PHPMailer = new PHPMailer(true);
         $reflection = new \ReflectionClass($PHPMailer);
         $property = $reflection->getProperty('oauth');
-        $property->setAccessible(true);
+        (\PHP_VERSION_ID < 80100) && $property->setAccessible(true);
         $property->setValue($PHPMailer, true);
         self::assertTrue($PHPMailer->getOAuth(), 'Initial value of oauth property is not true');
 
