@@ -13,8 +13,8 @@
 
 namespace PHPMailer\Test;
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\SMTP;
 use ReflectionClass;
 use ReflectionProperty;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase as PolyfillTestCase;
@@ -119,6 +119,7 @@ abstract class TestCase extends PolyfillTestCase
     private $PHPMailerStaticProps = [
         'LE'        => PHPMailer::CRLF,
         'validator' => 'php',
+        'language'  => [],
     ];
 
     /**
