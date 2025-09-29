@@ -1262,16 +1262,19 @@ class PHPMailerAMP
      *
      * @see http://www.andrew.cmu.edu/user/agreen1/testing/mrbs/web/Mail/RFC822.php A more careful implementation
      *
-     * @param string $addrstr The address list string
-     * @param bool   $useimap Whether to use the IMAP extension to parse the list
-     * @param string $charset The charset to use when decoding the address list string.
+     * @param string      $addrstr       The address list string
+     * @param string|null $deprecatedArg Deprecated argument since 6.11.0.
+     * @param string      $charset       The charset to use when decoding the address list string.
      *
      * @return array
      */
-    public static function parseAddresses($addrstr, $useimap = true, $charset = self::CHARSET_ISO88591)
+    public static function parseAddresses($addrstr, $deprecatedArg = null, $charset = self::CHARSET_ISO88591)
     {
+        if ($deprecatedArg !== null) {
+            trigger_error(self::lang('deprecated_argument'), E_USER_DEPRECATED);
+        }
         $addresses = [];
-        if ($useimap && function_exists('imap_rfc822_parse_adrlist')) {
+        if (function_exists('imap_rfc822_parse_adrlist')) {
             //Use this built-in parser if it's available
             $list = imap_rfc822_parse_adrlist($addrstr, '');
             // Clear any potential IMAP errors to get rid of notices being thrown at end of script.
@@ -1281,20 +1284,13 @@ class PHPMailerAMP
                     '.SYNTAX-ERROR.' !== $address->host &&
                     static::validateAddress($address->mailbox . '@' . $address->host)
                 ) {
-                    //Decode the name part if it's present and encoded
+                    //Decode the name part if it's present and maybe encoded
                     if (
-                        property_exists($address, 'personal') &&
-                        //Check for a Mbstring constant rather than using extension_loaded, which is sometimes disabled
-                        defined('MB_CASE_UPPER') &&
-                        preg_match('/^=\?.*\?=$/s', $address->personal)
+                        property_exists($address, 'personal')
+                        && is_string($address->personal)
+                        && $address->personal !== ''
                     ) {
-                        $origCharset = mb_internal_encoding();
-                        mb_internal_encoding($charset);
-                        //Undo any RFC2047-encoded spaces-as-underscores
-                        $address->personal = str_replace('_', '=20', $address->personal);
-                        //Decode the name
-                        $address->personal = mb_decode_mimeheader($address->personal);
-                        mb_internal_encoding($origCharset);
+                        $address->personal = static::decodeHeader($address->personal, $charset);
                     }
 
                     $addresses[] = [
@@ -1305,7 +1301,7 @@ class PHPMailerAMP
             }
         } else {
             //Use this simpler parser
-            $addresses = self::parseSimplerAddresses($addrstr, $charset);
+            $addresses = static::parseSimplerAddresses($addrstr, $charset);
         }
 
         return $addresses;
@@ -1327,6 +1323,7 @@ class PHPMailerAMP
         // Emit a runtime notice to recommend using the IMAP extension for full RFC822 parsing
         trigger_error(self::lang('imap_recommended'), E_USER_NOTICE);
 
+        $addresses = [];
         $list = explode(',', $addrstr);
         foreach ($list as $address) {
             $address = trim($address);
@@ -1340,21 +1337,10 @@ class PHPMailerAMP
                     ];
                 }
             } else {
-                list($name, $email) = explode('<', $address);
-                $email = trim(str_replace('>', '', $email));
-                $name = trim($name);
+                $parsed = static::parseEmailString($address);
+                $email = $parsed['email'];
                 if (static::validateAddress($email)) {
-                    //Check for a Mbstring constant rather than using extension_loaded, which is sometimes disabled
-                    //If this name is encoded, decode it
-                    if (defined('MB_CASE_UPPER') && preg_match('/^=\?.*\?=$/s', $name)) {
-                        $origCharset = mb_internal_encoding();
-                        mb_internal_encoding($charset);
-                        //Undo any RFC2047-encoded spaces-as-underscores
-                        $name = str_replace('_', '=20', $name);
-                        //Decode the name
-                        $name = mb_decode_mimeheader($name);
-                        mb_internal_encoding($origCharset);
-                    }
+                    $name = static::decodeHeader($parsed['name'], $charset);
                     $addresses[] = [
                         //Remove any surrounding quotes and spaces from the name
                         'name' => trim($name, '\'" '),
@@ -1365,6 +1351,42 @@ class PHPMailerAMP
         }
 
         return $addresses;
+    }
+
+    /**
+     * Parse a string containing an email address with an optional name
+     * and divide it into a name and email address.
+     *
+     * @param string $input The email with name.
+     *
+     * @return array{name: string, email: string}
+     */
+    private static function parseEmailString($input)
+    {
+        $input = trim((string)$input);
+
+        if ($input === '') {
+            return ['name' => '', 'email' => ''];
+        }
+
+        $pattern = '/^\s*(?:(?:"([^"]*)"|\'([^\']*)\'|([^<]*?))\s*)?<\s*([^>]+)\s*>\s*$/';
+        if (preg_match($pattern, $input, $matches)) {
+            $name = '';
+            // Double quotes including special scenarios.
+            if (isset($matches[1]) && $matches[1] !== '') {
+                $name = $matches[1];
+            // Single quotes including special scenarios.
+            } elseif (isset($matches[2]) && $matches[2] !== '') {
+                $name = $matches[2];
+            // Simplest scenario, name and email are in the format "Name <email>".
+            } elseif (isset($matches[3])) {
+                $name = trim($matches[3]);
+            }
+
+            return ['name' => $name, 'email' => trim($matches[4])];
+        }
+
+        return ['name' => '', 'email' => $input];
     }
 
     /**
@@ -1889,7 +1911,7 @@ class PHPMailerAMP
                 fwrite($mail, $header);
                 fwrite($mail, $body);
                 $result = pclose($mail);
-                $addrinfo = static::parseAddresses($toAddr, true, $this->CharSet);
+                $addrinfo = static::parseAddresses($toAddr, null, $this->CharSet);
                 foreach ($addrinfo as $addr) {
                     $this->doCallback(
                         ($result === 0),
@@ -2067,7 +2089,7 @@ class PHPMailerAMP
         if ($this->SingleTo && count($toArr) > 1) {
             foreach ($toArr as $toAddr) {
                 $result = $this->mailPassthru($toAddr, $this->Subject, $body, $header, $params);
-                $addrinfo = static::parseAddresses($toAddr, true, $this->CharSet);
+                $addrinfo = static::parseAddresses($toAddr, null, $this->CharSet);
                 foreach ($addrinfo as $addr) {
                     $this->doCallback(
                         $result,
@@ -2484,6 +2506,7 @@ class PHPMailerAMP
             'no_smtputf8' => 'Server does not support SMTPUTF8 needed to send to Unicode addresses',
             'imap_recommended' => 'Using simplified address parser is not recommended. ' .
                 'Install the PHP IMAP extension for full RFC822 parsing.',
+            'deprecated_argument' => 'Argument $deprecatedArg is deprecated',
         ];
         if (empty($lang_path)) {
             //Calculate an absolute path so it can work if CWD is not here
@@ -3983,6 +4006,42 @@ class PHPMailerAMP
         }
 
         return trim(static::normalizeBreaks($encoded));
+    }
+
+    /**
+     * Decode an RFC2047-encoded header value
+     * Attempts multiple strategies so it works even when the mbstring extension is disabled.
+     *
+     * @param string $value   The header value to decode
+     * @param string $charset The target charset to convert to, defaults to ISO-8859-1 for BC
+     *
+     * @return string The decoded header value
+     */
+    public static function decodeHeader($value, $charset = self::CHARSET_ISO88591)
+    {
+        if (!is_string($value) || $value === '') {
+            return '';
+        }
+        // Detect the presence of any RFC2047 encoded-words
+        $hasEncodedWord = (bool) preg_match('/=\?.*\?=/s', $value);
+        if ($hasEncodedWord && defined('MB_CASE_UPPER')) {
+            $origCharset = mb_internal_encoding();
+            // Always decode to UTF-8 to provide a consistent, modern output encoding.
+            mb_internal_encoding($charset);
+            if (PHP_VERSION_ID < 80300) {
+                // Undo any RFC2047-encoded spaces-as-underscores.
+                $value = str_replace('_', '=20', $value);
+            } else {
+                // PHP 8.3+ already interprets underscores as spaces. Remove additional
+                // linear whitespace between adjacent encoded words to avoid double spacing.
+                $value = preg_replace('/(\?=)\s+(=\?)/', '$1$2', $value);
+            }
+            // Decode the header value
+            $value = mb_decode_mimeheader($value);
+            mb_internal_encoding($origCharset);
+        }
+
+        return $value;
     }
 
     /**
