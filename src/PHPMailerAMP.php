@@ -1267,7 +1267,9 @@ class PHPMailerAMP
      * @see http://www.andrew.cmu.edu/user/agreen1/testing/mrbs/web/Mail/RFC822.php A more careful implementation
      *
      * @param string $addrstr The address list string
-     * @param null   $useimap Deprecated argument since 6.11.0.
+     * @param null   $useimap Unused. Argument has been deprecated in PHPMailer 6.11.0.
+     *                        Previously this argument determined whether to use
+     *                        the IMAP extension to parse the list and accepted a boolean value.
      * @param string $charset The charset to use when decoding the address list string.
      *
      * @return array
@@ -1275,7 +1277,7 @@ class PHPMailerAMP
     public static function parseAddresses($addrstr, $useimap = null, $charset = self::CHARSET_ISO88591)
     {
         if ($useimap !== null) {
-            trigger_error(self::lang('deprecated_argument'), E_USER_DEPRECATED);
+            trigger_error(self::lang('deprecated_argument') . '$useimap', E_USER_DEPRECATED);
         }
         $addresses = [];
         if (function_exists('imap_rfc822_parse_adrlist')) {
@@ -2510,7 +2512,7 @@ class PHPMailerAMP
             'no_smtputf8' => 'Server does not support SMTPUTF8 needed to send to Unicode addresses',
             'imap_recommended' => 'Using simplified address parser is not recommended. ' .
                 'Install the PHP IMAP extension for full RFC822 parsing.',
-            'deprecated_argument' => 'Argument $useimap is deprecated',
+            'deprecated_argument' => 'Deprecated Argument: ',
         ];
         if (empty($lang_path)) {
             //Calculate an absolute path so it can work if CWD is not here
