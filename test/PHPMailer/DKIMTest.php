@@ -14,7 +14,6 @@
 namespace PHPMailer\Test\PHPMailer;
 
 use PHPMailerAMP\PHPMailerAMP\Exception;
-use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\SendTestCase;
 
 /**
