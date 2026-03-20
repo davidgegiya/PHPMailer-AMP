@@ -18,7 +18,7 @@ use PHPMailer\Test\TestCase;
 /**
  * Test address formatting.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::addrFormat
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addrFormat
  */
 final class AddrFormatTest extends TestCase
 {
@@ -45,7 +45,7 @@ final class AddrFormatTest extends TestCase
      *
      * @return array
      */
-    public function dataAddrFormat()
+    public static function dataAddrFormat()
     {
         return [
             // Test cases with valid addresses.

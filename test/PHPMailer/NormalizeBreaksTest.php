@@ -13,14 +13,14 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\TestCase as MailerTestCase;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * Test normalize line breaks functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::normalizeBreaks
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::normalizeBreaks
  */
 final class NormalizeBreaksTest extends TestCase
 {
@@ -44,7 +44,7 @@ final class NormalizeBreaksTest extends TestCase
      *
      * @return array
      */
-    public function dataNormalizeBreaks()
+    public static function dataNormalizeBreaks()
     {
         $LE           = PHPMailer::getLE();
         $baseExpected = 'hello' . PHPMailer::CRLF . 'World' . PHPMailer::CRLF . 'Again' . PHPMailer::CRLF;

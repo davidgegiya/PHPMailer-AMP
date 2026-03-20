@@ -13,13 +13,13 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * Test file name to type functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::filenameToType
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::filenameToType
  */
 final class FilenameToTypeTest extends TestCase
 {
@@ -42,7 +42,7 @@ final class FilenameToTypeTest extends TestCase
      *
      * @return array
      */
-    public function dataFilenameToType()
+    public static function dataFilenameToType()
     {
         return [
             'Empty string' => [

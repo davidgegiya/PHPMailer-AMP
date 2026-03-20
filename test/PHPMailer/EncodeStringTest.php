@@ -13,8 +13,8 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\Exception;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\TestCase;
 
 /**
@@ -25,7 +25,7 @@ final class EncodeStringTest extends TestCase
     /**
      * Encoding and charset tests.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::encodeString
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::encodeString
      *
      * @dataProvider dataEncodeString
      *
@@ -49,7 +49,7 @@ final class EncodeStringTest extends TestCase
      *
      * @return array
      */
-    public function dataEncodeString()
+    public static function dataEncodeString()
     {
         $input           = 'hello';
         $LE              = PHPMailer::getLE();
@@ -106,7 +106,7 @@ final class EncodeStringTest extends TestCase
     /**
      * Test passing an incorrect encoding.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::encodeString
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::encodeString
      */
     public function testInvalidEncoding()
     {
@@ -122,7 +122,7 @@ final class EncodeStringTest extends TestCase
      * Test passing an incorrect encoding results in an exception being thrown when PHPMailer is
      * instantiated with `$exceptions = true`.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::encodeString
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::encodeString
      */
     public function testInvalidEncodingException()
     {

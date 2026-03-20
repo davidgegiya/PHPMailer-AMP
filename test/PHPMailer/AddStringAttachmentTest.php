@@ -13,17 +13,17 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\Exception;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\PreSendTestCase;
 
 /**
  * Test adding string attachments functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::addStringAttachment
- * @covers \PHPMailer\PHPMailer\PHPMailer::attachmentExists
- * @covers \PHPMailer\PHPMailer\PHPMailer::createBody
- * @covers \PHPMailer\PHPMailer\PHPMailer::getAttachments
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addStringAttachment
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::attachmentExists
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::createBody
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::getAttachments
  */
 final class AddStringAttachmentTest extends PreSendTestCase
 {
@@ -133,7 +133,7 @@ final class AddStringAttachmentTest extends PreSendTestCase
      *
      * @return array
      */
-    public function dataFailToAttach()
+    public static function dataFailToAttach()
     {
         return [
             'Invalid: invalid encoding' => [

@@ -77,7 +77,7 @@ final class ParseAddressesTest extends TestCase
      *      expected: array{name: string, address: string}[]
      *      charset: string
      */
-    public function dataAddressSplittingNative()
+    public static function dataAddressSplittingNative()
     {
         return [
             'Valid address: single address without name' => [
@@ -118,7 +118,7 @@ final class ParseAddressesTest extends TestCase
      *
      * @return array The array is expected to have an `addrstr` and an `expected` key.
      */
-    public function dataParseEmailString()
+    public static function dataParseEmailString()
     {
         return [
             'Valid address: simple address' => [
@@ -170,7 +170,7 @@ final class ParseAddressesTest extends TestCase
      * @return array The array is expected to have an `addrstr` and an `expected` key.
      *               The `expected` key should - as a minimum.
      */
-    public function dataAddressSplitting()
+    public static function dataAddressSplitting()
     {
         return [
             // Test cases with valid addresses.
@@ -282,7 +282,7 @@ final class ParseAddressesTest extends TestCase
      * @return array The array is expected to have an `addrstr` and an `expected` key.
      *               The `expected` key should - as a minimum - have a single value.
      */
-    public function dataDecodeHeader()
+    public static function dataDecodeHeader()
     {
         return [
             'UTF-8 B-encoded' => [

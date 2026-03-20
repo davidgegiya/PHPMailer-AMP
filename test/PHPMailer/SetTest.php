@@ -18,7 +18,7 @@ use PHPMailer\Test\TestCase;
 /**
  * Test property setting functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::set
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::set
  */
 final class SetTest extends TestCase
 {
@@ -40,7 +40,7 @@ final class SetTest extends TestCase
      *
      * @return array
      */
-    public function dataSetValidProperty()
+    public static function dataSetValidProperty()
     {
         return [
             'Valid: property exists, public' => [

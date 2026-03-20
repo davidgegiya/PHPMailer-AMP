@@ -13,13 +13,13 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * Test mime type mapping functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::_mime_types
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::_mime_types
  */
 final class MimeTypesTest extends TestCase
 {
@@ -42,7 +42,7 @@ final class MimeTypesTest extends TestCase
      *
      * @return array
      */
-    public function dataMime_Types()
+    public static function dataMime_Types()
     {
         return [
             'Extension: pdf (lowercase)' => [

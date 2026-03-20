@@ -13,16 +13,16 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\Exception;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\PreSendTestCase;
 
 /**
  * Test adding stringified attachments functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::addStringEmbeddedImage
- * @covers \PHPMailer\PHPMailer\PHPMailer::getAttachments
- * @covers \PHPMailer\PHPMailer\PHPMailer::inlineImageExists
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addStringEmbeddedImage
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::getAttachments
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::inlineImageExists
  */
 final class AddStringEmbeddedImageTest extends PreSendTestCase
 {
@@ -146,7 +146,7 @@ final class AddStringEmbeddedImageTest extends PreSendTestCase
      *
      * @return array
      */
-    public function dataFailToAttach()
+    public static function dataFailToAttach()
     {
         return [
             'Invalid: invalid encoding' => [

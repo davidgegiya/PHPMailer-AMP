@@ -92,7 +92,7 @@ final class SetErrorTest extends TestCase
      *
      * @return array
      */
-    public function dataSetErrorSmtp()
+    public static function dataSetErrorSmtp()
     {
         return [
             'No SMTP error' => [

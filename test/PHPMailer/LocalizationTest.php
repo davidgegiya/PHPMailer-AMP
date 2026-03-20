@@ -68,7 +68,7 @@ final class LocalizationTest extends TestCase
      *
      * @return array
      */
-    public function dataSetLanguageSuccess()
+    public static function dataSetLanguageSuccess()
     {
         $customPath = dirname(__DIR__) . '/Fixtures/LocalizationTest/';
 
@@ -141,7 +141,7 @@ final class LocalizationTest extends TestCase
      *
      * @return array
      */
-    public function dataSetLanguageSuccessFallBackLogic()
+    public static function dataSetLanguageSuccessFallBackLogic()
     {
         $customPath = dirname(__DIR__) . '/Fixtures/LocalizationTest/';
 
@@ -228,7 +228,7 @@ final class LocalizationTest extends TestCase
      *
      * @return array
      */
-    public function dataSetLanguageFail()
+    public static function dataSetLanguageFail()
     {
         $customPath = dirname(__DIR__) . '/Fixtures/LocalizationTest/';
 
@@ -420,7 +420,7 @@ final class LocalizationTest extends TestCase
      *
      * @return array
      */
-    public function dataGetTranslations()
+    public static function dataGetTranslations()
     {
         return [
             'No explicit language set' => [
@@ -460,7 +460,7 @@ final class LocalizationTest extends TestCase
      *
      * @return array
      */
-    public function dataLang()
+    public static function dataLang()
     {
         return [
             'Key: "invalid_address", default language (en)' => [

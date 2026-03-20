@@ -13,17 +13,17 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\Exception;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\PreSendTestCase;
 
 /**
  * Test adding embedded image(s) functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::addEmbeddedImage
- * @covers \PHPMailer\PHPMailer\PHPMailer::createBody
- * @covers \PHPMailer\PHPMailer\PHPMailer::getAttachments
- * @covers \PHPMailer\PHPMailer\PHPMailer::inlineImageExists
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addEmbeddedImage
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::createBody
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::getAttachments
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::inlineImageExists
  */
 final class AddEmbeddedImageTest extends PreSendTestCase
 {
@@ -158,7 +158,7 @@ final class AddEmbeddedImageTest extends PreSendTestCase
      *
      * @return array
      */
-    public function dataFailToAttach()
+    public static function dataFailToAttach()
     {
         return [
             'Invalid: non-existent file' => [

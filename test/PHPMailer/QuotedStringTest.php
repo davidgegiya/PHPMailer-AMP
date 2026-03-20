@@ -13,13 +13,13 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * Test quoted string functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::quotedString
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::quotedString
  */
 final class QuotedStringTest extends TestCase
 {
@@ -42,7 +42,7 @@ final class QuotedStringTest extends TestCase
      *
      * @return array
      */
-    public function dataQuotedString()
+    public static function dataQuotedString()
     {
         return [
             'No special chars' => [

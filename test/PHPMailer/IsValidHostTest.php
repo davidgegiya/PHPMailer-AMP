@@ -13,13 +13,13 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * Test host validation functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::isValidHost
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::isValidHost
  */
 final class IsValidHostTest extends TestCase
 {
@@ -40,7 +40,7 @@ final class IsValidHostTest extends TestCase
      *
      * @return array
      */
-    public function dataValidHost()
+    public static function dataValidHost()
     {
         return [
             'localhost'                 => ['localhost'],
@@ -76,7 +76,7 @@ final class IsValidHostTest extends TestCase
      *
      * @return array
      */
-    public function dataInvalidHost()
+    public static function dataInvalidHost()
     {
         return [
             'Invalid type: null'                        => [null],

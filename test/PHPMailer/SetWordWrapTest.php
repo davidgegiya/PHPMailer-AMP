@@ -18,8 +18,8 @@ use PHPMailer\Test\PreSendTestCase;
 /**
  * Test automatic wordwrap functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::setWordWrap
- * @covers \PHPMailer\PHPMailer\PHPMailer::wrapText
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::setWordWrap
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::wrapText
  */
 final class SetWordWrapTest extends PreSendTestCase
 {
@@ -68,7 +68,7 @@ final class SetWordWrapTest extends PreSendTestCase
      *
      * @return array
      */
-    public function dataWordWrap()
+    public static function dataWordWrap()
     {
         return [
             'ascii message' => [
