@@ -196,7 +196,7 @@ jobs:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      # Install postfix and automatically retry if the install failed, which happens reguarly.
+      # Install postfix and automatically retry if the install failed, which happens regularly.
       # @link https://github.com/marketplace/actions/retry-step
       - name: Install postfix
         uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
