@@ -80,7 +80,7 @@ class PHPMailerAMP
     public $CharSet = self::CHARSET_ISO88591;
 
     /**
-     * The MIME Content-type of the message.
+     * The MIME Content-Type of the message.
      *
      * @var string
      */
@@ -170,7 +170,7 @@ class PHPMailerAMP
     public $Ical = '';
 
     /**
-     * Value-array of "method" in Content-type header "text/calendar"
+     * Value-array of "method" in Content-Type header "text/calendar"
      *
      * @var string[]
      */
