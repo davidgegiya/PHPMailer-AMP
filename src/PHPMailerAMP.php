@@ -3007,7 +3007,11 @@ class PHPMailerAMP
                 break;
             default:
                 //Catches case 'plain': and case '':
-                $result .= $this->textLine('Content-Type: ' . $this->ContentType . '; charset=' . $this->CharSet);
+                $result .= $this->textLine(
+                    'Content-Type: ' .
+                    $this->secureHeader($this->ContentType) .
+                    '; charset=' . $this->secureHeader($this->CharSet)
+                );
                 $ismultipart = false;
                 break;
         }
