@@ -62,6 +62,7 @@ class PHPMailerAMP
     const ICAL_METHOD_REFRESH = 'REFRESH';
     const ICAL_METHOD_COUNTER = 'COUNTER';
     const ICAL_METHOD_DECLINECOUNTER = 'DECLINECOUNTER';
+    const RFC822_DATE_FORMAT = 'D, j M Y H:i:s O';
 
     /**
      * Email priority.
@@ -2880,7 +2881,10 @@ class PHPMailerAMP
     {
         $result = '';
 
-        $result .= $this->headerLine('Date', '' === $this->MessageDate ? self::rfcDate() : $this->MessageDate);
+        $result .= $this->headerLine(
+            'Date',
+            self::sanitiseDate($this->MessageDate)
+        );
 
         //The To header is created automatically by mail(), so needs to be omitted here
         if ('mail' !== $this->Mailer) {
@@ -4727,7 +4731,7 @@ class PHPMailerAMP
     }
 
     /**
-     * Return an RFC 822 formatted date.
+     * Return the current date and time as an RFC 822 formatted date.
      *
      * @return string
      */
@@ -4737,7 +4741,51 @@ class PHPMailerAMP
         //Will default to UTC if it's not set properly in php.ini
         date_default_timezone_set(@date_default_timezone_get());
 
-        return date('D, j M Y H:i:s O');
+        return date(self::RFC822_DATE_FORMAT);
+    }
+
+    /**
+     * Normalise a user-supplied date into a correctly-formatted RFC 5322 date value
+     * string suitable for use in the Date header.
+     *
+     * Accepts:
+     *  - A {@see \DateTime} (or \DateTimeImmutable) object
+     *  - Any date/time string understood by PHP's DateTime constructor (RFC 5322, ISO 8601,
+     *    Unix timestamp with leading "@", natural-language strings, etc.)
+     *
+     * Dates in the future are not permitted for email headers; if the parsed date is later
+     * than "now" the method falls back to the current time via {@see self::rfcDate()}.
+     * An empty value, a non-string/non-DateTime argument, or any value that cannot be
+     * parsed will likewise fall back to {@see self::rfcDate()}.
+     *
+     * @param \DateTime|\DateTimeImmutable|string $date The date to normalise
+     *
+     * @return string An RFC 5322-formatted date string
+     */
+    private static function sanitiseDate($date)
+    {
+        try {
+            //Ensure the default timezone is set properly
+            date_default_timezone_set(@date_default_timezone_get());
+
+            if ($date instanceof \DateTimeInterface) {
+                $dt = $date;
+            } elseif (is_string($date) && $date !== '') {
+                $dt = new \DateTime($date);
+            } else {
+                //Empty string, null, or any unsupported type
+                return self::rfcDate();
+            }
+
+            //Reject future dates — they are invalid for outgoing message headers
+            if ($dt->getTimestamp() > time()) {
+                return self::rfcDate();
+            }
+
+            return $dt->format(self::RFC822_DATE_FORMAT);
+        } catch (\Exception $e) {
+            return self::rfcDate();
+        }
     }
 
     /**
