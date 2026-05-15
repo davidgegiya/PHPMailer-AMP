@@ -780,7 +780,7 @@ class PHPMailerAMP
      *
      * @var string
      */
-    const VERSION = '7.0.2';
+    const VERSION = '7.1.0';
 
     /**
      * Error severity: message only, continue processing.
