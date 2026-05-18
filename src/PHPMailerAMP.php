@@ -4462,7 +4462,7 @@ class PHPMailerAMP
     protected function validateEncoding($encoding)
     {
         return in_array(
-            $encoding,
+            strtolower($encoding),
             [
                 self::ENCODING_7BIT,
                 self::ENCODING_QUOTED_PRINTABLE,
