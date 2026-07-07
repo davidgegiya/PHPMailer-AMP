@@ -1313,7 +1313,8 @@ class PHPMailerAMP
      * the deprecated $useimap argument is truthy.
      * Note that quotes in the name part are removed.
      *
-     * @see http://www.andrew.cmu.edu/user/agreen1/testing/mrbs/web/Mail/RFC822.php A more careful implementation
+     * @deprecated This method will be removed in the next major release of PHPMailer.
+     * @see https://www.andrew.cmu.edu/user/agreen1/testing/mrbs/web/Mail/RFC822.php A more careful implementation
      *
      * @param string $addrstr The address list string
      * @param bool|null $useimap Deprecated in PHPMailer 6.11.0.
