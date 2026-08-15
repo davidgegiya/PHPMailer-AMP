@@ -29,6 +29,8 @@ jobs:
           php-version: 'latest'
           coverage: none
           tools: cs2pr
+        env:
+          fail-fast: true
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
@@ -75,6 +77,8 @@ jobs:
           ini-values: error_reporting=-1, display_errors=On, display_startup_errors=On
           coverage: none
           tools: cs2pr
+        env:
+          fail-fast: true
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
@@ -177,6 +181,8 @@ jobs:
           coverage: ${{ matrix.coverage && 'xdebug' || 'none' }}
           ini-values: sendmail_path=/usr/sbin/sendmail -t -i, error_reporting=-1, display_errors=On, display_startup_errors=On
           extensions: ${{ steps.set_extensions.outputs.EXT }}
+        env:
+          fail-fast: true
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
