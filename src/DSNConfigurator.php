@@ -22,7 +22,10 @@
 namespace PHPMailerAMP\PHPMailerAMP;
 
 /**
- * Configure PHPMailer with DSN string.
+ * Configure PHPMailer with a DSN string.
+ * Be aware that a DSN string can configure *all* PHPMailer properties,
+ * including those that have security consequences, so do not use
+ * user-provided DSN strings without strict validation of all parameters.
  *
  * @see https://en.wikipedia.org/wiki/Data_source_name
  *
