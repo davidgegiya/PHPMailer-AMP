@@ -1512,8 +1512,8 @@ class PHPMailerAMP
      * Check that a string looks like an email address.
      * Validation patterns supported:
      * * `auto` Pick best pattern automatically;
-     * * `pcre8` Use the squiloople.com pattern, requires PCRE > 8.0;
-     * * `pcre` Use old PCRE implementation;
+     * * `pcre8` (deprecated, will convert to PHP validator) Use the squiloople.com pattern, requires PCRE > 8.0
+     * * `pcre` (deprecated, will convert to PHP validator) Use old PCRE implementation, kept for BC;
      * * `php` Use PHP built-in FILTER_VALIDATE_EMAIL;
      * * `html5` Use the pattern given by the HTML5 spec for 'email' type form input elements.
      * * `eai` Use a pattern similar to the HTML5 spec for 'email' and to firefox, extended to support EAI (RFC6530).
@@ -1529,7 +1529,8 @@ class PHPMailerAMP
      * You can also set the PHPMailerAMP::$validator static to a callable, allowing built-in methods to use your validator.
      *
      * @param string          $address       The email address to check
-     * @param string|callable $patternselect Which pattern to use
+     * @param string|callable $patternselect Which pattern to use;
+     *                                        the `pcre` and `pcre8` patterns are deprecated
      *
      * @return bool
      */
@@ -1547,7 +1548,7 @@ class PHPMailerAMP
             return false;
         }
         switch ($patternselect) {
-            case 'pcre': //Kept for BC
+            case 'pcre': //Deprecated, kept for BC
             case 'pcre8':
                 /*
                  * A more complex and more permissive version of the RFC5322 regex on which FILTER_VALIDATE_EMAIL
