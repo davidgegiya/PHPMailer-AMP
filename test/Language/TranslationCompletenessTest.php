@@ -14,7 +14,7 @@
 
 namespace PHPMailer\Test\Language;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**

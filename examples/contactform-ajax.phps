@@ -5,7 +5,7 @@
  */
 
 //Import PHPMailer class into the global namespace
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 
 //Don't run this unless we're handling a form submission
 if (array_key_exists('email', $_POST)) {

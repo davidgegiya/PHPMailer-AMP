@@ -6,8 +6,8 @@
  */
 
 //Import the PHPMailer SMTP class into the global namespace
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
+use PHPMailerAMP\PHPMailerAMP\SMTP;
+use PHPMailerAMP\PHPMailerAMP\Exception;
 
 require '../vendor/autoload.php';
 

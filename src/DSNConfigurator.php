@@ -22,8 +22,8 @@
 namespace PHPMailerAMP\PHPMailerAMP;
 
 /**
- * Configure PHPMailer with a DSN string.
- * Be aware that a DSN string can configure *all* PHPMailer properties,
+ * Configure PHPMailerAMP with a DSN string.
+ * Be aware that a DSN string can configure *all* PHPMailerAMP properties,
  * including those that have security consequences, so do not use
  * user-provided DSN strings without strict validation of all parameters.
  *
@@ -34,7 +34,7 @@ namespace PHPMailerAMP\PHPMailerAMP;
 class DSNConfigurator
 {
     /**
-     * Create new PHPMailer instance configured by DSN.
+     * Create new PHPMailerAMP instance configured by DSN.
      *
      * @param string $dsn        DSN
      * @param bool   $exceptions Should we throw external exceptions?
@@ -53,9 +53,9 @@ class DSNConfigurator
     }
 
     /**
-     * Configure PHPMailer instance with DSN string.
+     * Configure PHPMailerAMP instance with DSN string.
      *
-     * @param PHPMailerAMP $mailer PHPMailer instance
+     * @param PHPMailerAMP $mailer PHPMailerAMP instance
      * @param string    $dsn    DSN
      *
      * @return PHPMailerAMP
@@ -96,7 +96,7 @@ class DSNConfigurator
     /**
      * Apply configuration to mailer.
      *
-     * @param PHPMailerAMP $mailer PHPMailer instance
+     * @param PHPMailerAMP $mailer PHPMailerAMP instance
      * @param array     $config Configuration
      *
      * @throws Exception If scheme is invalid
@@ -135,7 +135,7 @@ class DSNConfigurator
     /**
      * Configure SMTP.
      *
-     * @param PHPMailerAMP $mailer PHPMailer instance
+     * @param PHPMailerAMP $mailer PHPMailerAMP instance
      * @param array     $config Configuration
      */
     private function configureSMTP($mailer, $config)
@@ -168,7 +168,7 @@ class DSNConfigurator
     /**
      * Configure options.
      *
-     * @param PHPMailerAMP $mailer  PHPMailer instance
+     * @param PHPMailerAMP $mailer  PHPMailerAMP instance
      * @param array     $options Options
      *
      * @throws Exception If option is unknown
