@@ -4,8 +4,8 @@
  * SMTP low memory example.
  */
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\SMTP;
 
 /**
  * This class demonstrates sending an already-built RFC822 message via SMTP

@@ -22,7 +22,10 @@
 namespace PHPMailerAMP\PHPMailerAMP;
 
 /**
- * Configure PHPMailer with DSN string.
+ * Configure PHPMailerAMP with a DSN string.
+ * Be aware that a DSN string can configure *all* PHPMailerAMP properties,
+ * including those that have security consequences, so do not use
+ * user-provided DSN strings without strict validation of all parameters.
  *
  * @see https://en.wikipedia.org/wiki/Data_source_name
  *
@@ -31,12 +34,12 @@ namespace PHPMailerAMP\PHPMailerAMP;
 class DSNConfigurator
 {
     /**
-     * Create new PHPMailer instance configured by DSN.
+     * Create new PHPMailerAMP instance configured by DSN.
      *
      * @param string $dsn        DSN
      * @param bool   $exceptions Should we throw external exceptions?
      *
-     * @return PHPMailer
+     * @return PHPMailerAMP
      */
     public static function mailer($dsn, $exceptions = null)
     {
@@ -46,18 +49,18 @@ class DSNConfigurator
             $configurator = new DSNConfigurator();
         }
 
-        return $configurator->configure(new PHPMailer($exceptions), $dsn);
+        return $configurator->configure(new PHPMailerAMP($exceptions), $dsn);
     }
 
     /**
-     * Configure PHPMailer instance with DSN string.
+     * Configure PHPMailerAMP instance with DSN string.
      *
-     * @param PHPMailer $mailer PHPMailer instance
+     * @param PHPMailerAMP $mailer PHPMailerAMP instance
      * @param string    $dsn    DSN
      *
-     * @return PHPMailer
+     * @return PHPMailerAMP
      */
-    public function configure(PHPMailer $mailer, $dsn)
+    public function configure(PHPMailerAMP $mailer, $dsn)
     {
         $config = $this->parseDSN($dsn);
 
@@ -93,12 +96,12 @@ class DSNConfigurator
     /**
      * Apply configuration to mailer.
      *
-     * @param PHPMailer $mailer PHPMailer instance
+     * @param PHPMailerAMP $mailer PHPMailerAMP instance
      * @param array     $config Configuration
      *
      * @throws Exception If scheme is invalid
      */
-    private function applyConfig(PHPMailer $mailer, $config)
+    private function applyConfig(PHPMailerAMP $mailer, $config)
     {
         switch ($config['scheme']) {
             case 'mail':
@@ -132,7 +135,7 @@ class DSNConfigurator
     /**
      * Configure SMTP.
      *
-     * @param PHPMailer $mailer PHPMailer instance
+     * @param PHPMailerAMP $mailer PHPMailerAMP instance
      * @param array     $config Configuration
      */
     private function configureSMTP($mailer, $config)
@@ -140,7 +143,7 @@ class DSNConfigurator
         $isSMTPS = 'smtps' === $config['scheme'];
 
         if ($isSMTPS) {
-            $mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mailer->SMTPSecure = PHPMailerAMP::ENCRYPTION_SMTPS;
         }
 
         $mailer->Host = $config['host'];
@@ -165,12 +168,12 @@ class DSNConfigurator
     /**
      * Configure options.
      *
-     * @param PHPMailer $mailer  PHPMailer instance
+     * @param PHPMailerAMP $mailer  PHPMailerAMP instance
      * @param array     $options Options
      *
      * @throws Exception If option is unknown
      */
-    private function configureOptions(PHPMailer $mailer, $options)
+    private function configureOptions(PHPMailerAMP $mailer, $options)
     {
         $allowedOptions = get_object_vars($mailer);
 

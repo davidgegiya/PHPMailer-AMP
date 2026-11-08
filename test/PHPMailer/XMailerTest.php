@@ -13,13 +13,13 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\TestCase;
 
 /**
  * Test XMailer header setting functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::createHeader
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::createHeader
  */
 final class XMailerTest extends TestCase
 {
@@ -47,7 +47,7 @@ final class XMailerTest extends TestCase
      *
      * @return array
      */
-    public function dataXMailer()
+    public static function dataXMailer()
     {
         return [
             'empty string' => [

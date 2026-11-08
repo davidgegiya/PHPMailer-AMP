@@ -16,9 +16,9 @@
  */
 
 // Import PHPMailer classes
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\SMTP;
+use PHPMailerAMP\PHPMailerAMP\Exception;
 // Import SendOauth2B class
 use decomplexity\SendOauth2\SendOauth2B;
 
@@ -75,7 +75,7 @@ try {
             'serviceAccountName'          => 'string',                // GoogleAPI service account only. Else null
             'impersonate'                 => 'you@mydomain.com',      // Google API service account only. Else null
                                                                       // default to 'mailSMTPAddress', must be
-                                                                      // a Google Wspace email adddress, not @gmail
+                                                                      // a Google Workspace email address, not @gmail
             'gmailXoauth2Credentials'     => 'your credentials.json', // File name - defaults to:
                                                                       // gmail-xoauth2-credentials.json
             'writeGmailCredentialsFile'   => 'yes' or 'no',           // Defaults to 'yes'; meaning the

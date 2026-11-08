@@ -18,7 +18,7 @@ use PHPMailer\Test\TestCase;
 /**
  * Test UTF8 character boundary functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::utf8CharBoundary
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::utf8CharBoundary
  *
  * @todo Add more testcases to properly cover all paths in the method!
  */
@@ -43,7 +43,7 @@ final class Utf8CharBoundaryTest extends TestCase
      *
      * @return array
      */
-    public function dataUtf8CharBoundary()
+    public static function dataUtf8CharBoundary()
     {
         return [
             'Encoded word with multibyte char first byte' => [

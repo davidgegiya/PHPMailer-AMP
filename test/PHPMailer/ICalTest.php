@@ -24,7 +24,7 @@ final class ICalTest extends PreSendTestCase
      * Test ICal method.
      *
      * @dataProvider dataICalMethod
-     * @covers       \PHPMailer\PHPMailer\PHPMailer::createBody
+     * @covers       \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::createBody
      *
      * @param string $methodLine The Ical method line to use.
      * @param string $expected   The expected method in the content type header.
@@ -76,7 +76,7 @@ final class ICalTest extends PreSendTestCase
      *
      * @return array
      */
-    public function dataICalMethod()
+    public static function dataICalMethod()
     {
         return [
             'Valid method: request (default)' => [

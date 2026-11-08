@@ -13,13 +13,13 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\TestCase;
 
 /**
  * Test IDN to ASCII functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::punyencodeAddress
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::punyencodeAddress
  */
 final class PunyencodeAddressTest extends TestCase
 {
@@ -51,7 +51,7 @@ final class PunyencodeAddressTest extends TestCase
      *
      * @return array
      */
-    public function dataPunyencodeAddressConversion()
+    public static function dataPunyencodeAddressConversion()
     {
         return [
             // This source file is in UTF-8, so characters here are in native charset.
@@ -108,7 +108,7 @@ final class PunyencodeAddressTest extends TestCase
      *
      * @return array
      */
-    public function dataPunyencodeAddressNoConversion()
+    public static function dataPunyencodeAddressNoConversion()
     {
         return [
             'ASCII' => [

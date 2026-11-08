@@ -13,13 +13,13 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\TestCase;
 
 /**
  * Test email address validation using a custom validator.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::validateAddress
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::validateAddress
  */
 final class ValidateAddressCustomValidatorTest extends TestCase
 {
@@ -96,7 +96,7 @@ final class ValidateAddressCustomValidatorTest extends TestCase
      *
      * @return array
      */
-    public function dataRejectCallables()
+    public static function dataRejectCallables()
     {
         return [
             // If a `php` function defined in validators.php successfully overrides this built-in validator name,
@@ -105,7 +105,7 @@ final class ValidateAddressCustomValidatorTest extends TestCase
                 'callback' => 'php',
                 'message'  => 'Build-in php validator overridden',
             ],
-            // Check that a non-existent validator name falls back to a built-in validator
+            // Check that a nonexistent validator name falls back to a built-in validator
             // and does not call a global function with that name.
             'phpx' => [
                 'callback' => 'phpx',

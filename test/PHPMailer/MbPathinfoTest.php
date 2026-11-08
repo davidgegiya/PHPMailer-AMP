@@ -13,13 +13,13 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * Test Multi-byte-safe pathinfo replacement functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::mb_pathinfo
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::mb_pathinfo
  */
 final class MbPathinfoTest extends TestCase
 {
@@ -42,7 +42,7 @@ final class MbPathinfoTest extends TestCase
      *
      * @return array
      */
-    public function dataMb_pathinfoWithoutOptions()
+    public static function dataMb_pathinfoWithoutOptions()
     {
         return [
             'Empty string' => [
@@ -131,7 +131,7 @@ final class MbPathinfoTest extends TestCase
      *
      * @return array
      */
-    public function dataMb_pathinfoWithOptions()
+    public static function dataMb_pathinfoWithOptions()
     {
         return [
             'Option: PATHINFO_DIRNAME' => [

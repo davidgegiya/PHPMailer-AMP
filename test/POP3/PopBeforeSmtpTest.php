@@ -13,7 +13,7 @@
 
 namespace PHPMailer\Test\POP3;
 
-use PHPMailer\PHPMailer\POP3;
+use PHPMailerAMP\PHPMailerAMP\POP3;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
@@ -21,7 +21,7 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  *
  * @group pop3
  *
- * @covers PHPMailer\PHPMailer\POP3
+ * @covers PHPMailerAMP\PHPMailerAMP\POP3
  */
 final class PopBeforeSmtpTest extends TestCase
 {
@@ -52,7 +52,7 @@ final class PopBeforeSmtpTest extends TestCase
     protected function set_up()
     {
         if (DIRECTORY_SEPARATOR === '\\') {
-            $this->markTestSkipped('This test needs a non-Windows OS to run');
+            self::markTestSkipped('This test needs a non-Windows OS to run');
         }
 
         // Chdir to test directory as runfakepopserver.sh runs fakepopserver.sh

@@ -8,9 +8,9 @@
  */
 
 //Import PHPMailer classes into the global namespace
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\OAuth;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\SMTP;
+use PHPMailerAMP\PHPMailerAMP\OAuth;
 //Alias the League Google OAuth2 provider class
 use Greew\OAuth2\Client\Provider\Azure;
 

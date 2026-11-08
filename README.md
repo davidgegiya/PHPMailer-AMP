@@ -1,17 +1,16 @@
-
 # PHPMailer-AMP – Same PHPMailer package with AMP content support
 
 ## Features
-- `AMPBody` property
+- `AmpBody` property
 - `isAMP()` function
 - Building function `msgAMP()`
-- 5 new message types - amp, alt_amp, alt_amp_inline, alt_amp_attach and alt_amp_inline_attach (mixed plain text, html and amp content and html, amp with attachments)
+- AMP, plain text, and HTML alternatives, with support for inline images and attachments
 
 ## License
 This software is distributed under the [LGPL 2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html) license, along with the [GPL Cooperation Commitment](https://gplcc.github.io/gplcc/). Please read [LICENSE](https://github.com/PHPMailer/PHPMailer/blob/master/LICENSE) for information on the software availability and distribution.
 
 ## Installation & loading
-PHPMailer is available on [Packagist](https://packagist.org/packages/phpmailer/phpmailer) (using semantic versioning), and installation via [Composer](https://getcomposer.org) is the recommended way to install PHPMailer. Just add this line to your `composer.json` file:
+PHPMailer is available on [Packagist](https://packagist.org/packages/phpmailer-amp/phpmailer-amp) (using semantic versioning), and installation via [Composer](https://getcomposer.org) is the recommended way to install PHPMailer. Just add this line to your `composer.json` file:
 
 ```json
 "phpmailer-amp/phpmailer-amp": "^1.1.0"
@@ -25,7 +24,7 @@ composer require phpmailer-amp/phpmailer-amp
 
 ```php
 <?php
-use PHPMailerAMP\PHPMailerAMP;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP;
 ```
 
 ## An example how to send message with AMP content
@@ -34,7 +33,7 @@ use PHPMailerAMP\PHPMailerAMP;
 <?php
 //Import PHPMailer classes into the global namespace
 //These must be at the top of your script, not inside a function
-use PHPMailerAMP\PHPMailerAMP\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP;
 use PHPMailerAMP\PHPMailerAMP\SMTP;
 use PHPMailerAMP\PHPMailerAMP\Exception;
 
@@ -52,8 +51,8 @@ try {
     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
     $mail->Username   = 'user@example.com';                     //SMTP username
     $mail->Password   = 'secret';                               //SMTP password
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+    $mail->SMTPSecure = PHPMailerAMP::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailerAMP::ENCRYPTION_STARTTLS`
 
     //Recipients
     $mail->setFrom('from@example.com', 'Mailer');
@@ -69,7 +68,7 @@ try {
 
     //Content
     $mail->isHTML(true);                                  //Set email format to HTML
-    $mail->isAMP(true);                                   //Enable AMP content             
+    $mail->isAMP(true);                                   //Enable AMP content
     $mail->Subject = 'Here is the subject';
     $mail->AmpBody = 'This is the AMP message body <style amp4email-boilerplate>body{visibility:hidden}</style>'
     $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
@@ -85,4 +84,7 @@ try {
 
 - Code refactoring
 
-#### Forked from PHPMailer `v.6.9.1`
+## Upstream
+
+Based on [PHPMailer 7.2.0](https://github.com/PHPMailer/PHPMailer/releases/tag/v7.2.0).
+See the [upstream upgrade guide](https://github.com/PHPMailer/PHPMailer/blob/v7.2.0/UPGRADING.md) for changes to the base library. Use the fork’s namespace and package name shown above.

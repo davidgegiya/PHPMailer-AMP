@@ -18,8 +18,8 @@ use PHPMailer\Test\PreSendTestCase;
 /**
  * Test setting and retrieving message ID.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::createHeader
- * @covers \PHPMailer\PHPMailer\PHPMailer::getLastMessageID
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::createHeader
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::getLastMessageID
  */
 final class GetLastMessageIDTest extends PreSendTestCase
 {
@@ -45,7 +45,7 @@ final class GetLastMessageIDTest extends PreSendTestCase
      *
      * @return array
      */
-    public function dataMessageIDInvalid()
+    public static function dataMessageIDInvalid()
     {
         $hash = hash('sha256', 12345);
 
@@ -86,7 +86,7 @@ final class GetLastMessageIDTest extends PreSendTestCase
      *
      * @return array
      */
-    public function dataMessageIDValid()
+    public static function dataMessageIDValid()
     {
         $hash = hash('sha256', 12345);
 

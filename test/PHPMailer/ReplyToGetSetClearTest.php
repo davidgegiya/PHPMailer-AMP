@@ -13,8 +13,8 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\Exception;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\PreSendTestCase;
 
 /**
@@ -25,10 +25,10 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
     /**
      * Test adding a non-IDN reply-to address.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addReplyTo
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addOrEnqueueAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::getReplyToAddresses
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addReplyTo
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addOrEnqueueAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::getReplyToAddresses
      *
      * @dataProvider dataAddReplyToValidAddressNonIdn
      *
@@ -48,7 +48,6 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
 
         if (isset($expected) === false) {
             $expected = [
-                'key'     => $address,
                 'address' => $address,
                 'name'    => $name,
             ];
@@ -62,25 +61,19 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
         self::assertIsArray($retrieved, 'ReplyTo property is not an array');
         self::assertCount(1, $retrieved, 'ReplyTo property does not contain exactly one address');
 
-        $key = $expected['key'];
-        self::assertArrayHasKey(
-            $key,
-            $retrieved,
-            'ReplyTo property does not contain an entry with this address as the key'
-        );
         self::assertCount(
             2,
-            $retrieved[$key],
+            $retrieved[0],
             'ReplyTo array for this address does not contain exactly two array items'
         );
         self::assertSame(
             $expected['address'],
-            $retrieved[$key][0],
+            $retrieved[0][0],
             'ReplyTo array for this address does not contain added address'
         );
         self::assertSame(
             $expected['name'],
-            $retrieved[$key][1],
+            $retrieved[0][1],
             'ReplyTo array for this address does not contain added name'
         );
     }
@@ -90,7 +83,7 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
      *
      * @return array
      */
-    public function dataAddReplyToValidAddressNonIdn()
+    public static function dataAddReplyToValidAddressNonIdn()
     {
         return [
             'Valid address' => [
@@ -100,7 +93,6 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
                 'address' => " \tMiXeD@Example.Com  \r\n",
                 'name'    => null,
                 'expected' => [
-                    'key'     => 'mixed@example.com',
                     'address' => 'MiXeD@Example.Com',
                     'name'    => '',
                 ],
@@ -113,7 +105,6 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
                 'address'  => 'a@example.com',
                 'name'     => "\t\t  ReplyTo\r\nname  ",
                 'expected' => [
-                    'key'     => 'a@example.com',
                     'address' => 'a@example.com',
                     'name'    => 'ReplyToname',
                 ],
@@ -124,8 +115,8 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
     /**
      * Test adding an invalid non-IDN reply-to address.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addOrEnqueueAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addOrEnqueueAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addAnAddress
      *
      * @dataProvider dataAddReplyToInvalidAddressNonIdn
      *
@@ -146,8 +137,8 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
     /**
      * Test receiving an excepting when adding an invalid non-IDN reply-to address.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addOrEnqueueAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addOrEnqueueAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addAnAddress
      *
      * @dataProvider dataAddReplyToInvalidAddressNonIdn
      *
@@ -167,7 +158,7 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
      *
      * @return array
      */
-    public function dataAddReplyToInvalidAddressNonIdn()
+    public static function dataAddReplyToInvalidAddressNonIdn()
     {
         return [
             'Invalid domain' => ['a@example..com'],
@@ -178,9 +169,9 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
     /**
      * Test that the correct Reply-To message header has been added to the message.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addReplyTo
-     * @covers \PHPMailer\PHPMailer\PHPMailer::createHeader
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addrAppend
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addReplyTo
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::createHeader
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addrAppend
      *
      * @dataProvider dataReplyToInMessageHeader
      *
@@ -213,7 +204,7 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
      *
      * @return array
      */
-    public function dataReplyToInMessageHeader()
+    public static function dataReplyToInMessageHeader()
     {
         $LE = PHPMailer::getLE();
 
@@ -263,10 +254,10 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
      * - IDN addresses initially get enqueued.
      * - IDN addresses correctly get added during `preSend()`.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addReplyTo
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addOrEnqueueAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::preSend
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addReplyTo
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addOrEnqueueAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::preSend
      *
      * @requires extension mbstring
      * @requires function idn_to_ascii
@@ -292,9 +283,11 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
 
         // Addresses with IDN are returned by get*Addresses() after preSend() call.
         $domain = $this->Mail->punyencodeAddress($domain);
+        $expected = array('test+replyto' . $domain, '');
+        $retrieved = $this->Mail->getReplyToAddresses();
         self::assertSame(
-            ['test+replyto' . $domain => ['test+replyto' . $domain, '']],
-            $this->Mail->getReplyToAddresses(),
+            $expected,
+            $retrieved[0],
             'Bad "reply-to" addresses'
         );
     }
@@ -303,8 +296,8 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
      * Tests that non-exact duplicate reply-to addresses do get enqueued (IDN),
      * but don't get added (IDN converted to punycode + non-IDN).
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addOrEnqueueAnAddress
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addOrEnqueueAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addAnAddress
      *
      * @requires extension mbstring
      * @requires function idn_to_ascii
@@ -377,24 +370,24 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
         self::assertCount(1, $retrieved, 'Stored addresses after preSend() is not 1');
 
         // Verify that the registered reply-to address is the initially added lowercase punycode one.
-        self::assertArrayHasKey(
+        self::assertSame(
             $expectedAddress,
-            $retrieved,
+            $retrieved[0][0],
             'ReplyTo property does not contain an entry with this address as the key'
         );
         self::assertCount(
             2,
-            $retrieved[$expectedAddress],
+            $retrieved[0],
             'ReplyTo array for this address does not contain exactly two array items'
         );
         self::assertSame(
             $expectedAddress,
-            $retrieved[$expectedAddress][0],
+            $retrieved[0][0],
             'ReplyTo array for this address does not contain added address'
         );
         self::assertSame(
             '',
-            $retrieved[$expectedAddress][1],
+            $retrieved[0][1],
             'ReplyTo array for this address does not contain added name'
         );
     }
@@ -404,12 +397,12 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
      * an 8bit character is passed and either the MbString or the Intl extension are
      * not available.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::addAnAddress
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::addAnAddress
      */
     public function testAddReplyToFailsOn8BitCharInDomainWithoutOptionalExtensions()
     {
-        if (extension_loaded('mbstring') && function_exists('idn_to_ascii')) {
-            $this->markTestSkipped('Test requires MbString and/or Intl *not* to be available');
+        if (PHPMailer::idnSupported()) {
+            self::markTestSkipped('Test requires MbString and/or Intl *not* to be available');
         }
 
         self::assertFalse($this->Mail->addReplyTo('test@françois.ch'));
@@ -418,7 +411,7 @@ final class ReplyToGetSetClearTest extends PreSendTestCase
     /**
      * Test successfully clearing out both the added as well as the queued Reply-to addresses.
      *
-     * @covers \PHPMailer\PHPMailer\PHPMailer::clearReplyTos
+     * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::clearReplyTos
      *
      * @requires extension mbstring
      * @requires function idn_to_ascii

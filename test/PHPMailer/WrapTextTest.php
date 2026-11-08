@@ -13,13 +13,13 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\TestCase;
 
 /**
  * Test word wrapping functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::wrapText
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::wrapText
  */
 final class WrapTextTest extends TestCase
 {
@@ -43,7 +43,7 @@ final class WrapTextTest extends TestCase
      *
      * @return array
      */
-    public function dataWrapText()
+    public static function dataWrapText()
     {
         return [
             'empty string' => [

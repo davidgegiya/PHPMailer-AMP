@@ -13,13 +13,13 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\TestCase;
 
 /**
  * Test encoding a string using Q encoding functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::encodeQ
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::encodeQ
  */
 final class EncodeQTest extends TestCase
 {
@@ -53,7 +53,7 @@ final class EncodeQTest extends TestCase
      *
      * @return array
      */
-    public function dataEncodeQ()
+    public static function dataEncodeQ()
     {
         return [
             'Encode for text; char encoding default (iso88591)' => [

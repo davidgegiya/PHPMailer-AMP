@@ -13,13 +13,13 @@
 
 namespace PHPMailer\Test\PHPMailer;
 
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailerAMP\PHPMailerAMP\PHPMailerAMP as PHPMailer;
 use PHPMailer\Test\PreSendTestCase;
 
 /**
  * Test unique ID generation functionality.
  *
- * @covers \PHPMailer\PHPMailer\PHPMailer::generateId
+ * @covers \PHPMailerAMP\PHPMailerAMP\PHPMailerAMP::generateId
  */
 final class GenerateIdTest extends PreSendTestCase
 {
